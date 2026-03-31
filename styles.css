@@ -73,3 +73,21 @@
 .product-links .btn {
     padding: 12px 25px;
 }
+.product-card.featured {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+    color: var(--white);
+}
+
+.product-card.featured .product-badge {
+    background: var(--white);
+    color: var(--primary-blue);
+}
+
+.product-card.featured .product-description strong {
+    color: var(--light-gray);
+}
+
+.product-card.featured .btn-primary {
+    background: var(--white);
+    color: var(--primary-blue);
+}
