@@ -3,22 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Corex Team - Innovate. Build. Shape the Future.</title>
+    <title>Corex Team - Minimal Open-Source Projects</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Navbar -->
     <nav class="navbar">
-        <div class="container nav-container">
-            <div class="logo">
-                <img src="Corex_Team.png" alt="Corex Logo" class="logo-image">
-                <span class="logo-text">Corex Team</span>
-            </div>
+        <div class="container">
+            <div class="logo">Corex Team</div>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#products">Products</a></li>
-                <li><a href="#features">Features</a></li>
                 <li><a href="#team">Team</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -27,18 +23,10 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="container hero-container">
-            <div class="hero-text">
-                <h1>Innovate. Build. <span class="highlight">Shape the Future.</span></h1>
-                <p>Corex Team develops cutting-edge software, hardware, and open-source solutions for the tech community.</p>
-                <div class="hero-buttons">
-                    <a href="#products" class="btn btn-primary">Explore Products</a>
-                    <a href="https://github.com/The-Corex-Team/Corex-Linux" target="_blank" class="btn btn-secondary">View on GitHub</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img src="rocket.png" alt="Rocket" />
-            </div>
+        <div class="container hero-content">
+            <h1>Corex Team</h1>
+            <p>Building reliable, open-source software with simplicity and elegance in mind.</p>
+            <a href="#products" class="btn btn-primary">Explore Projects</a>
         </div>
     </section>
 
@@ -48,19 +36,16 @@
             <h2>About Corex</h2>
             <div class="about-grid">
                 <div class="about-card">
-                    <div class="icon">💡</div>
                     <h3>Our Vision</h3>
-                    <p>Create innovative, privacy-focused, and high-performance technology that empowers users.</p>
+                    <p>Create software that is secure, efficient, and user-friendly for everyone.</p>
                 </div>
                 <div class="about-card">
-                    <div class="icon">🎯</div>
                     <h3>Our Mission</h3>
-                    <p>Build a strong community of developers, engineers, and tech enthusiasts.</p>
+                    <p>Develop open-source solutions while fostering a collaborative community.</p>
                 </div>
                 <div class="about-card">
-                    <div class="icon">🔧</div>
                     <h3>What We Do</h3>
-                    <p>Operating systems, software, custom hardware, AI, cybersecurity, and open-source projects.</p>
+                    <p>Linux distributions, utilities, and developer tools for modern computing.</p>
                 </div>
             </div>
         </div>
@@ -69,48 +54,23 @@
     <!-- Products Section -->
     <section id="products" class="products">
         <div class="container">
-            <h2>Our Products</h2>
-            <div class="product-showcase">
-                <!-- Monotype -->
+            <h2>Projects</h2>
+            <div class="product-grid">
                 <div class="product-card">
-                    <div class="product-badge">Pre-Alpha</div>
-                    <h3>Monotype</h3>
-                    <p class="product-tagline">Proprietary Operating System</p>
-                    <p class="product-description">
-                        Monotype is a pre-alpha OS by Corex Team featuring basic networking, VGA graphics, and a shell environment. Unstable, for testing only.
-                    </p>
-                    <div class="product-links">
-                        <a href="https://github.com/walter-322/Monotype/releases/tag/Pre-Alpha-1" target="_blank" class="btn btn-primary">Pre-Alpha Release</a>
-                    </div>
+                    <h3>Monotype OS</h3>
+                    <p>Experimental operating system for testing and educational purposes.</p>
+                    <a href="#" class="btn btn-secondary">Learn More</a>
                 </div>
-
-                <!-- Corex Linux -->
-                <div class="product-card featured">
-                    <div class="product-badge">Coming Soon</div>
+                <div class="product-card">
                     <h3>Corex Linux</h3>
-                    <p class="product-tagline">Lightweight Linux for Windows users</p>
-                    <p class="product-description">
-                        Corex Linux is a modern Linux distro for older hardware with Debian (stable) and Arch (cutting-edge) editions.
-                    </p>
-                    <div class="product-links">
-                        <a href="https://github.com/The-Corex-Team/Corex-Linux/" target="_blank" class="btn btn-primary">View on GitHub</a>
-                    </div>
+                    <p>Lightweight, stable Linux distribution for modern and legacy hardware.</p>
+                    <a href="#" class="btn btn-secondary">Learn More</a>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <h2>Key Features</h2>
-            <div class="features-grid">
-                <div class="feature-item"><span>🐧</span><h4>Arch & Debian Editions</h4><p>Choose stability or cutting-edge updates.</p></div>
-                <div class="feature-item"><span>⚡</span><h4>Low Resource Usage</h4><p>Optimized for older hardware.</p></div>
-                <div class="feature-item"><span>🔒</span><h4>No Telemetry</h4><p>Respect user privacy.</p></div>
-                <div class="feature-item"><span>💿</span><h4>Live ISO</h4><p>Test without installation.</p></div>
-                <div class="feature-item"><span>🎨</span><h4>Custom Themes</h4><p>Personalize your desktop experience.</p></div>
-                <div class="feature-item"><span>👨‍💻</span><h4>Developer-Friendly</h4><p>Open-source tools & documentation.</p></div>
+                <div class="product-card">
+                    <h3>SysTools</h3>
+                    <p>Utilities for system monitoring and administration, cross-platform compatible.</p>
+                    <a href="#" class="btn btn-secondary">Learn More</a>
+                </div>
             </div>
         </div>
     </section>
@@ -119,11 +79,11 @@
     <section id="team" class="team">
         <div class="container">
             <h2>The Team</h2>
+            <p>A collaborative community of developers and enthusiasts.</p>
             <div class="team-grid">
                 <div class="team-member">
-                    <img src="walter.png" alt="Walter">
-                    <h4>Walter</h4>
-                    <p>Founder & Lead Developer</p>
+                    <h3>Core Contributors</h3>
+                    <p>Open-source enthusiasts building quality software.</p>
                 </div>
             </div>
         </div>
@@ -133,10 +93,10 @@
     <section id="contact" class="contact">
         <div class="container">
             <h2>Contact Us</h2>
-            <p>Join the Corex Team or reach out for collaboration!</p>
+            <p>Join our community or contribute to our projects.</p>
             <div class="contact-links">
-                <a href="https://github.com/The-Corex-Team/Corex-Linux" target="_blank" class="btn btn-primary">GitHub</a>
-                <a href="https://corexcorporation.netlify.app/" target="_blank" class="btn btn-secondary">Official Website</a>
+                <a href="#" class="btn btn-primary">GitHub</a>
+                <a href="#" class="btn btn-secondary">Official Website</a>
             </div>
         </div>
     </section>
@@ -144,7 +104,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Corex Team. All rights reserved.</p>
+            <p>&copy; 2026 Corex Team. Open-source and minimalistic.</p>
         </div>
     </footer>
 </body>
