@@ -5,22 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Corex Team - Innovate. Build. Shape the Future.</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Standard favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
-    <!-- Fallback for older browsers -->
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <!-- Apple Touch Icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-container">
             <div class="logo">
                 <img src="Corex_Team.png" alt="Corex Logo" class="logo-image">
                 <span class="logo-text">Corex Team</span>
             </div>
-            <ul class="nav-links">
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#products">Products</a></li>
@@ -77,7 +74,7 @@
         </div>
     </section>
 
-        <!-- Products Section -->
+    <!-- Products Section -->
     <section id="products" class="products">
         <div class="container">
             <h2 class="section-title">Our Products</h2>
@@ -91,26 +88,20 @@
                         Monotype is a proprietary OS developed by the Corex Team. This pre-alpha build is an early technical preview featuring i386 architecture, VGA/Bochs VBE graphics support, basic networking (TCP/IP, IPv4), and a shell environment. Highly unstable—intended for testing only.
                     </p>
                     <div class="product-links">
-                        <a href="https://github.com/walter-322/Monotype/releases/tag/Pre-Alpha-1" target="_blank" class="btn btn-primary">
-                            View Pre-Alpha Release
-                        </a>
+                        <a href="https://github.com/walter-322/Monotype/releases/tag/Pre-Alpha-1" target="_blank" class="btn btn-primary">View Pre-Alpha Release</a>
                     </div>
                 </div>
-    
-                <!-- Corex Linux (featured gradient card) -->
+
+                <!-- Corex Linux (featured card) -->
                 <div class="product-card featured">
                     <div class="product-badge">Coming Soon</div>
                     <h3>Corex Linux</h3>
                     <p class="product-tagline">A Lightweight, Windows-Friendly Linux Distribution</p>
                     <p class="product-description">
-                        Corex Linux is a modern, efficient Linux distribution designed to breathe new life into older hardware 
-                        and provide a familiar experience for users transitioning from Windows. Available in both 
-                        <strong>Debian-based</strong> (stability) and <strong>Arch-based</strong> (cutting-edge) editions.
+                        Corex Linux is a modern, efficient Linux distribution designed to breathe new life into older hardware and provide a familiar experience for users transitioning from Windows. Available in both <strong>Debian-based</strong> (stability) and <strong>Arch-based</strong> (cutting-edge) editions.
                     </p>
                     <div class="product-links">
-                        <a href="https://github.com/The-Corex-Team/Corex-Linux/" target="_blank" class="btn btn-primary">
-                            View on GitHub
-                        </a>
+                        <a href="https://github.com/The-Corex-Team/Corex-Linux/" target="_blank" class="btn btn-primary">View on GitHub</a>
                     </div>
                 </div>
             </div>
@@ -155,47 +146,23 @@
                 <div class="feature-item">
                     <div class="feature-icon">👓</div>
                     <h4>Best Features Possible</h4>
-                    <p>We are working on adding some best features from other Operating Systems such as MacOS (thanks to Apple) and Windows (thanks to Microsoft)</p>
+                    <p>We are working on adding features from MacOS and Windows to provide the best user experience.</p>
                 </div>
             </div>
 
-            <!-- Windows Tools Section -->
+            <!-- Windows Tools -->
             <div class="windows-tools">
                 <h3 class="subsection-title">🧰 Windows Administration Tools — Made for Linux</h3>
                 <p class="subsection-description">
-                    One of the core goals of Corex Linux is to bring the power and familiarity of Windows administrative tools to the Linux ecosystem.
+                    Corex Linux brings familiar Windows administration tools to Linux users.
                 </p>
                 <div class="tools-grid">
-                    <div class="tool-item">
-                        <span class="tool-windows">Task Manager</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">htop, bpytop, custom GUI monitor</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Control Panel</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">Centralized settings manager</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Event Viewer</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">journalctl, Logwatch frontend</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Group Policy Editor</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">PolicyKit & DConf tools</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Services Manager</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">Systemd graphical interface</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Disk Management</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">GParted, Disks utility</span>
-                    </div>
+                    <div class="tool-item"><span class="tool-windows">Task Manager</span> <span class="tool-arrow">→</span> <span class="tool-linux">htop, bpytop, custom GUI monitor</span></div>
+                    <div class="tool-item"><span class="tool-windows">Control Panel</span> <span class="tool-arrow">→</span> <span class="tool-linux">Centralized settings manager</span></div>
+                    <div class="tool-item"><span class="tool-windows">Event Viewer</span> <span class="tool-arrow">→</span> <span class="tool-linux">journalctl, Logwatch frontend</span></div>
+                    <div class="tool-item"><span class="tool-windows">Group Policy Editor</span> <span class="tool-arrow">→</span> <span class="tool-linux">PolicyKit & DConf tools</span></div>
+                    <div class="tool-item"><span class="tool-windows">Services Manager</span> <span class="tool-arrow">→</span> <span class="tool-linux">Systemd graphical interface</span></div>
+                    <div class="tool-item"><span class="tool-windows">Disk Management</span> <span class="tool-arrow">→</span> <span class="tool-linux">GParted, Disks utility</span></div>
                 </div>
             </div>
         </div>
@@ -206,7 +173,7 @@
         <div class="container">
             <h2 class="section-title">The Team</h2>
             <p class="community-intro">
-                Corex Linux is an open-source project, and contributions are welcome! Whether you're a developer, designer, tester, or just a passionate Linux user, there are many ways to help.
+                Corex Linux is open-source. Contributions from developers, designers, testers, and enthusiasts are welcome.
             </p>
             <div class="community-grid">
                 <div class="community-item">
@@ -221,22 +188,10 @@
             <div class="rules-section">
                 <h3 class="rules-title">Community Guidelines</h3>
                 <div class="rules-grid">
-                    <div class="rule-item">
-                        <span class="rule-icon">✅</span>
-                        <span>Respect Each Other – No hate speech, spamming, or toxic behavior.</span>
-                    </div>
-                    <div class="rule-item">
-                        <span class="rule-icon">✅</span>
-                        <span>Stay on Topic – Discussions should be related to Corex's development.</span>
-                    </div>
-                    <div class="rule-item">
-                        <span class="rule-icon">✅</span>
-                        <span>Contribute & Collaborate – Share ideas, code, and feedback!</span>
-                    </div>
-                    <div class="rule-item">
-                        <span class="rule-icon">✅</span>
-                        <span>No Piracy or Illegal Activities – We build ethical tech.</span>
-                    </div>
+                    <div class="rule-item"><span class="rule-icon">✅</span> <span>Respect Each Other – No hate speech, spamming, or toxic behavior.</span></div>
+                    <div class="rule-item"><span class="rule-icon">✅</span> <span>Stay on Topic – Discussions should be related to Corex's development.</span></div>
+                    <div class="rule-item"><span class="rule-icon">✅</span> <span>Contribute & Collaborate – Share ideas, code, and feedback!</span></div>
+                    <div class="rule-item"><span class="rule-icon">✅</span> <span>No Piracy or Illegal Activities – We build ethical tech.</span></div>
                 </div>
             </div>
         </div>
@@ -249,22 +204,14 @@
             <div class="contact-content">
                 <div class="contact-info">
                     <h3>Let's Innovate Together</h3>
-                    <p>Ready to be part of the future? Join our community and help create something amazing!</p>
+                    <p>Join our community and help create something amazing!</p>
                     <div class="contact-links">
-                        <a href="https://github.com/The-Corex-Team/Corex-Linux" target="_blank" class="contact-link">
-                            <span class="link-icon">🐙</span>
-                            GitHub
-                        </a>
-                        <a href="https://corexcorporation.netlify.app/" target="_blank" class="contact-link">
-                            <span class="link-icon">🌐</span>
-                            Official Website
-                        </a>
+                        <a href="https://github.com/The-Corex-Team/Corex-Linux" target="_blank" class="contact-link"><span class="link-icon">🐙</span> GitHub</a>
+                        <a href="https://corexcorporation.netlify.app/" target="_blank" class="contact-link"><span class="link-icon">🌐</span> Official Website</a>
                     </div>
                 </div>
                 <div class="contact-cta">
-                    <a href="https://github.com/The-Corex-Team/Corex-Linux" target="_blank" class="btn btn-large btn-primary">
-                        🚀 Join the Project
-                    </a>
+                    <a href="https://github.com/The-Corex-Team/Corex-Linux" target="_blank" class="btn btn-large btn-primary">🚀 Join the Project</a>
                 </div>
             </div>
         </div>
