@@ -243,7 +243,7 @@
 
     if (error) {
       console.error("Supabase Error:", error)
-      feedContainer.innerHTML = <p class="text-red-600">Error loading news: ${error.message}</p>
+      feedContainer.innerHTML = `<p class="text-red-600">Error loading news: ${error.message}</p>`
       return
     }
 
