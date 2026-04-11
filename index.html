@@ -1,277 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Corex Corp - Innovate. Build. Shape the Future.</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corex Corporation | Empowering Hardware</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase Client -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .hero-bg {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+    }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: #2563eb;
+      transition: width 0.3s;
+    }
+    .nav-link:hover::after { width: 100%; }
+  </style>
 </head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container nav-container">
-            <div class="logo">
-                <img src="corexlogo.jpg" alt="Corex Logo" class="logo-image">
-                <span class="logo-text">The Corex Project</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#community">Community</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <button class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+
+<body class="bg-white text-gray-800 flex flex-col min-h-screen">
+
+  <!-- NAVIGATION BAR -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <!-- Logo Area -->
+      <a href="#" class="flex items-center gap-3">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Corex_Team.png" alt="Corex Logo" class="h-10">
+      </a>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex space-x-8 font-medium text-gray-600">      
+        <a href="index.html" class="nav-link hover:text-blue-600">Home</a>
+        <a href="documentation.html" class="nav-link hover:text-blue-600">Docs</a>
+        <a href="careers.html" class="nav-link hover:text-blue-600">Join Us</a>
+        <a href="https://github.com/The-Corex-Project/" class="nav-link hover:text-blue-600">Developers</a>
+      </div>
+
+      <!-- CTA Button -->
+       This Website has been visited <span id="visitor-count" class="text-gray-200 font-semibold">—</span> times! &nbsp;&nbsp;&nbsp;
+      <a href="https://github.com/The-Corex-Project/Corex-Linux"
+         class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition">
+        Get Corex Linux
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero-bg h-[500px] flex items-center justify-center text-center text-white px-4">
+    <div class="max-w-4xl">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">Empowering Your Hardware</h1>
+      <p class="text-xl md:text-2xl mb-8 text-gray-200">
+        Corex Corporation is dedicated to building sustainable, high-performance software solutions.
+        Experience the stability of Debian with the innovation of Corex.
+      </p>
+      <div class="flex justify-center gap-4">
+        <a href="products.html" class="bg-blue-600 px-8 py-3 rounded text-lg font-bold hover:bg-blue-700 transition">See Products</a>
+        <a href="#about" class="bg-white text-gray-900 px-8 py-3 rounded text-lg font-bold hover:bg-gray-100 transition">Our Vision</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- PRODUCTS SECTION -->
+  <section id="products" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-12 text-center">Our Solutions</h2>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded shadow hover:shadow-xl transition border-t-4 border-blue-600">
+          <div class="text-blue-600 text-4xl mb-4"><i class="fa-brands fa-linux"></i></div>
+          <h3 class="text-2xl font-bold mb-3">Corex Linux</h3>
+          <p class="text-gray-600 mb-6">
+            Our flagship operating system. Built on Debian, optimized for speed, and designed to revive aging infrastructure.
+          </p>
+          <a href="https://github.com/The-Corex-Team/Corex-Linux" class="text-blue-600 font-semibold hover:underline">Learn more &rarr;</a>
         </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container hero-container">
-            <div class="hero-content">
-                <h1 class="hero-title">Innovate. Build. <span class="highlight">Shape the Future.</span></h1>
-                <p class="hero-subtitle">Welcome to Corex — a community-driven project developing cutting-edge software, hardware, and open-source solutions.</p>
-                <div class="hero-buttons">
-                    <a href="#products" class="btn btn-primary">Explore Products</a>
-                    <a href="https://github.com/The-Corex-Project/Corex-Linux/" target="_blank" class="btn btn-secondary">View on GitHub</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <div class="rocket-animation">🚀</div>
-            </div>
+        <div class="bg-white p-8 rounded shadow hover:shadow-xl transition border-t-4 border-green-600">
+          <div class="text-green-600 text-4xl mb-4"><i class="fa-solid fa-server"></i></div>
+          <h3 class="text-2xl font-bold mb-3">Corex Enterprise</h3>
+          <p class="text-gray-600 mb-6">
+            Scalable deployment solutions for small businesses. Secure, private, and telemetry-free environments.
+          </p>
+          <a href="#" class="text-green-600 font-semibold hover:underline">View Solutions &rarr;</a>
         </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">About Corex</h2>
-            <div class="about-grid">
-                <div class="about-card">
-                    <div class="card-icon">💡</div>
-                    <h3>Our Vision</h3>
-                    <p>Create innovative, privacy-focused, and high-performance technology that empowers users to take full control of their computers.</p>
-                </div>
-                <div class="about-card">
-                    <div class="card-icon">🎯</div>
-                    <h3>Our Mission</h3>
-                    <p>Build a strong community of developers, engineers, and tech enthusiasts. Start as a project, grow into a company!</p>
-                </div>
-                <div class="about-card">
-                    <div class="card-icon">🔧</div>
-                    <h3>What We Do</h3>
-                    <p>Operating systems, software development, custom hardware, cloud computing, AI, cybersecurity, and open-source tech.</p>
-                </div>
-            </div>
+        <div class="bg-white p-8 rounded shadow hover:shadow-xl transition border-t-4 border-purple-600">
+          <div class="text-purple-600 text-4xl mb-4"><i class="fa-solid fa-code"></i></div>
+          <h3 class="text-2xl font-bold mb-3">Dev Ecosystem</h3>
+          <p class="text-gray-600 mb-6">
+            Open source tools and libraries maintained by Corex Corp to help developers build better software.
+          </p>
+          <a href="https://github.com/The-Corex-Team/" class="text-purple-600 font-semibold hover:underline">Visit GitHub &rarr;</a>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Products Section -->
-    <section id="products" class="products">
-        <div class="container">
-            <h2 class="section-title">Our Products</h2>
-            <div class="product-showcase">
-                <div class="product-main">
-                    <div class="product-badge">Coming Soon</div>
-                    <h3>Corex Linux GNOME Edition</h3>
-                    <p class="product-tagline">A Lightweight, Windows-Friendly Linux Distribution</p>
-                    <p class="product-description">
-                        Corex Linux is a modern, efficient Linux distribution designed to breathe new life into older hardware 
-                        and provide a familiar experience for users transitioning from Windows. Available in both 
-                        <strong>Debian-based</strong> (stability) and <strong>Arch-based</strong> (cutting-edge) editions.
-                    </p>
-                    <div class="product-links">
-                        <a href="https://github.com/The-Corex-Project/Corex-Linux/" target="_blank" class="btn btn-primary">
-                            View on GitHub
-                        </a>
-                        <a href="https://corexcorporation.netlify.app/" target="_blank" class="btn btn-secondary">
-                            Official Website
-                        </a>
-                    </div>
-                </div>
-            </div>
+  <!-- ABOUT US SECTION -->
+  <section id="about" class="py-20 bg-white">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+      <div class="md:w-1/2">
+        <img
+          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop"
+          alt="Team working"
+          class="rounded shadow-lg"
+        >
+      </div>
+      <div class="md:w-1/2">
+        <h4 class="text-blue-600 font-bold uppercase tracking-wide mb-2">About Us</h4>
+        <h2 class="text-4xl font-bold mb-6 text-gray-900">Innovation meets Preservation</h2>
+        <p class="text-lg text-gray-600 mb-4">
+          Founded in 2025, <strong>Corex Corporation</strong> was born from a simple idea: Hardware shouldn't expire just because software gets bloated.
+        </p>
+        <p class="text-lg text-gray-600 mb-6">
+          Truly say. We are searching Developers to join our Team or Organization and start building together. Also allowed to create your own Repositories and we together can make it popular while you are the part of a Team.
+        </p>
+        <div class="flex gap-4">
+          <div class="border-l-4 border-blue-600 pl-4">
+            <span class="block text-2xl font-bold text-gray-900">100%</span>
+            <span class="text-sm text-gray-500">Open Source</span>
+          </div>
+          <div class="border-l-4 border-blue-600 pl-4">
+            <span class="block text-2xl font-bold text-gray-900">Global</span>
+            <span class="text-sm text-gray-500">Community Driven</span>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- le future sectiom-->
-    <section id="features" class="features">
-        <div class="container">
-            <h2 class="section-title">Key Features</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">🐧</div>
-                    <h4>Arch & Debian Editions</h4>
-                    <p>Choose between stability or bleeding-edge performance</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <h4>Low Resource Usage</h4>
-                    <p>Optimized for performance on legacy hardware</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔒</div>
-                    <h4>No Telemetry</h4>
-                    <p>Respect for user privacy — no background data collection</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">💿</div>
-                    <h4>Live ISO</h4>
-                    <p>Try Corex Linux without installing it</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🎨</div>
-                    <h4>Custom Themes</h4>
-                    <p>Optional personalization for a unique desktop experience</p>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">👨‍💻</div>
-                    <h4>Developer-Friendly</h4>
-                    <p>Open-source tools and documentation for contributors</p>
-                </div>
-            </div>
-
-            <!-- Windows Tools Section -->
-            <div class="windows-tools">
-                <h3 class="subsection-title">🧰 Windows Administration Tools — Made for Linux</h3>
-                <p class="subsection-description">
-                    One of the core goals of Corex Linux is to bring the power and familiarity of Windows administrative tools to the Linux ecosystem.
-                </p>
-                <div class="tools-grid">
-                    <div class="tool-item">
-                        <span class="tool-windows">Task Manager</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">htop, bpytop, custom GUI monitor</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Control Panel</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">Centralized settings manager</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Event Viewer</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">journalctl, Logwatch frontend</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Group Policy Editor</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">PolicyKit & DConf tools</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Services Manager</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">Systemd graphical interface</span>
-                    </div>
-                    <div class="tool-item">
-                        <span class="tool-windows">Disk Management</span>
-                        <span class="tool-arrow">→</span>
-                        <span class="tool-linux">GParted, Disks utility</span>
-                    </div>
-                </div>
-            </div>
+  <!-- NEWSROOM -->
+  <section id="news" class="py-20 bg-slate-100">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between items-end mb-12">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900">Newsroom</h2>
+          <p class="text-gray-600 mt-2">Latest updates, press releases, and announcements.</p>
         </div>
-    </section>
+        <a href="#" class="text-blue-600 font-semibold hidden md:block">View Archive &rarr;</a>
+      </div>
 
-    <!-- the hardest one -->
-    <section id="community" class="community">
-        <div class="container">
-            <h2 class="section-title">The Team</h2>
-            <p class="community-intro">
-                Corex Linux is an open-source project, and contributions are welcome! Whether you're a developer, designer, tester, or just a passionate Linux user, there are many ways to help.
-            </p>
-            <div class="community-grid">
-                <div class="community-item">
-                    <div class="community-icon">
-                        <h4> Walter</h4>
-                        <p>Add ur desc</p>
-                    </div>
-            </div>
-
-            <!-- Rules Section -->
-            <div class="rules-section">
-                <h3 class="rules-title">Community Guidelines</h3>
-                <div class="rules-grid">
-                    <div class="rule-item">
-                        <span class="rule-icon">✅</span>
-                        <span>Respect Each Other – No hate speech, spamming, or toxic behavior.</span>
-                    </div>
-                    <div class="rule-item">
-                        <span class="rule-icon">✅</span>
-                        <span>Stay on Topic – Discussions should be related to Corex's development.</span>
-                    </div>
-                    <div class="rule-item">
-                        <span class="rule-icon">✅</span>
-                        <span>Contribute & Collaborate – Share ideas, code, and feedback!</span>
-                    </div>
-                    <div class="rule-item">
-                        <span class="rule-icon">✅</span>
-                        <span>No Piracy or Illegal Activities – We build ethical tech.</span>
-                    </div>
-                </div>
-            </div>
+      <div id="news-feed" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="col-span-3 text-center py-10">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+          <p class="mt-2 text-gray-500">Loading press releases...</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- le depraced contact section --- I used the old lincs -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Contact Us</h2>
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h3>Let's Innovate Together</h3>
-                    <p>Ready to be part of the future? Join our community and help create something amazing!</p>
-                    <div class="contact-links">
-                        <a href="https://github.com/The-Corex-Project/Corex-Linux/" target="_blank" class="contact-link">
-                            <span class="link-icon">🐙</span>
-                            GitHub
-                        </a>
-                        <a href="https://corexcorporation.netlify.app/" target="_blank" class="contact-link">
-                            <span class="link-icon">🌐</span>
-                            Official Website
-                        </a>
-                    </div>
-                </div>
-                <div class="contact-cta">
-                    <a href="https://github.com/The-Corex-Project/Corex-Linux/" target="_blank" class="btn btn-large btn-primary">
-                        🚀 Join the Project
-                    </a>
-                </div>
-            </div>
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-gray-300 py-12 mt-auto">
+    <div class="container mx-auto px-6 grid md:grid-cols-4 gap-8">
+      <div>
+        <h5 class="text-white font-bold text-lg mb-4">Corex Corp</h5>
+        <p class="text-sm text-gray-400">Building the future of lightweight computing.</p>
+
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Product</h5>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://github.com/The-Corex-Team/Corex-Linux" class="hover:text-white">Corex Linux</a></li>
+          <li><a href="documentation.html" class="hover:text-white">Documentation</a></li>
+          <li><a href="https://github.com/The-Corex-Team/Corex-Linux/releases" class="hover:text-white">Release Notes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Company</h5>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#about" class="hover:text-white">About Us</a></li>
+          <li><a href="careers.html" class="hover:text-white">Careers</a></li>
+          <li><a href="#news" class="hover:text-white">News</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Contact Me (or us)</h5>
+        <div class="flex space-x-4">
+          <a href="https://github.com/The-Corex-Team/" class="hover:text-white text-xl"><i class="fa-brands fa-github"></i></a>
+          <a href="mailto:walter.muller.1708@gmail.com" class="hover:text-white text-xl"><i class="fa-solid fa-envelope"></i></a>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <!-- Foot -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="logo">
-                        <img src="corexlogo.jpg" alt="Corex Logo" class="logo-image">
-                        <span class="logo-text">The Corex Project</span>
-                    </div>
-                    <p>Corex Project – Innovate. Build. Shape the Future.</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#about">About</a>
-                    <a href="#products">Products</a>
-                    <a href="#community">Community</a>
-                </div>
-                <div class="footer-social">
-                    <a href="https://github.com/The-Corex-Project/Corex-Linux/" target="_blank" class="social-link">GitHub</a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 Corex Project. All rights reserved. Made with ❤️ by Afif Ali Saadman.</p>
-            </div>
+    <div class="container mx-auto px-6 mt-12 pt-8 border-t border-gray-800 text-sm text-center">
+      &copy; 2025 Corex Corporation. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+  // ------------------------------------------
+  // SUPABASE KEYS
+  // ------------------------------------------
+  const supabaseUrl = 'https://jqpjauqimurndzpcunym.supabase.co'
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxcGphdXFpbXVybmR6cGN1bnltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3MDc3NzYsImV4cCI6MjA4MTI4Mzc3Nn0.tggjvD7KS5Y4zJnXJcPhbkYCh6zFoN-QdIX2-gagWyY'
+  // ------------------------------------------
+
+  // 1) Ensure Supabase is available
+  if (typeof supabase === 'undefined') {
+    const nf = document.getElementById('news-feed')
+    if (nf) {
+      nf.innerHTML =
+        '<p class="text-red-600 font-bold">Error: Supabase library not loaded. Check your internet connection.</p>'
+    }
+  }
+
+  // 2) Initialize client
+  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey)
+
+  // ------------------------------
+  // NEWS FETCH (your original)
+  // ------------------------------
+  async function fetchNews() {
+    const feedContainer = document.getElementById('news-feed')
+    if (!feedContainer) return
+
+    const { data, error } = await supabaseClient
+      .from('news')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(6)
+
+    if (error) {
+      console.error("Supabase Error:", error)
+      feedContainer.innerHTML = <p class="text-red-600">Error loading news: ${error.message}</p>
+      return
+    }
+
+    if (!data || data.length === 0) {
+      feedContainer.innerHTML = '<p class="text-gray-500 italic">No news has been posted yet.</p>'
+      return
+    }
+
+    feedContainer.innerHTML = ''
+
+    data.forEach(post => {
+      const date = new Date(post.created_at).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      })
+
+      const html = 
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg transition flex flex-col h-full border border-gray-100">
+          <div class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">News Update</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">${post.title}</h3>
+          <p class="text-gray-600 mb-4 flex-grow line-clamp-3">
+            ${post.content}
+          </p>
+          <div class="flex justify-between items-center text-sm text-gray-400 border-t pt-4 mt-auto">
+            <span>${date}</span>
+            <span>${post.author || 'Corex Team'}</span>
+          </div>
         </div>
-    </footer>
+      
+      feedContainer.innerHTML += html
+    })
+  }
 
-    <script src="script.js"></script>
+  // ------------------------------
+  // ✅ GLOBAL VISIT COUNTER (visitor++)
+  // Table: public.site_counter (id=1 row, visits bigint)
+  // ------------------------------
+  async function showCounterOnly() {
+    const el = document.getElementById("visitor-count")
+    if (!el) return
+
+    const { data, error } = await supabaseClient
+      .from("site_counter")
+      .select("visits")
+      .eq("id", 1)
+      .single()
+
+    if (error || !data) {
+      console.warn("Counter read failed:", error?.message)
+      el.textContent = "—"
+      return
+    }
+
+    el.textContent = String(data.visits)
+  }
+
+  async function incrementAndShowVisitorCount() {
+    const el = document.getElementById("visitor-count")
+    if (!el) return
+
+    // basic throttle per tab (prevents accidental fast refresh spam)
+    const throttleKey = "corex_counter_throttle"
+    const last = Number(sessionStorage.getItem(throttleKey) || 0)
+    const now = Date.now()
+
+    // If refreshed too fast, don't increment; just show current count
+    if (now - last < 10_000) {
+      await showCounterOnly()
+      return
+    }
+    sessionStorage.setItem(throttleKey, String(now))
+
+    // 1) Read current visits
+    const { data, error } = await supabaseClient
+      .from("site_counter")
+      .select("visits")
+      .eq("id", 1)
+      .single()
+
+    if (error || !data) {
+      console.warn("Counter read failed:", error?.message)
+      el.textContent = "—"
+      return
+    }
+
+    const next = Number(data.visits) + 1
+
+    // 2) Write visits + 1
+    const { error: upErr } = await supabaseClient
+      .from("site_counter")
+      .update({ visits: next, updated_at: new Date().toISOString() })
+      .eq("id", 1)
+
+    if (upErr) {
+      console.warn("Counter update failed:", upErr.message)
+      // show old count if update failed
+      el.textContent = String(data.visits)
+      return
+    }
+
+    // 3) Display new value
+    el.textContent = String(next)
+  }
+
+  // Run on load
+  fetchNews()
+  incrementAndShowVisitorCount()
+</script>
+
+
 </body>
 </html>

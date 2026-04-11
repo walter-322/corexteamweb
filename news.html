@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corex Team | News</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase Client -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: #2563eb;
+      transition: width 0.3s;
+    }
+    .nav-link:hover::after { width: 100%; }
+  </style>
+</head>
+
+<body class="bg-white text-gray-800 flex flex-col min-h-screen">
+
+  <!-- NAVIGATION BAR -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <!-- Logo Area -->
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Corex_Team.png" alt="Corex Logo" class="h-10">
+      </a>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex space-x-8 font-medium text-gray-600">
+        <a href="index.html" class="nav-link hover:text-blue-600">Home</a>
+        <a href="documentation.html" class="nav-link hover:text-blue-600">Docs</a>
+        <a href="careers.html" class="nav-link hover:text-blue-600">Join Us</a>
+        <a href="developers.html" class="nav-link hover:text-blue-600">Developers</a>
+        <a href="news.html" class="nav-link hover:text-blue-600">News</a>
+      </div>
+
+      <!-- CTA -->
+      <a href="projects.html"
+         class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition">
+        Projects
+      </a>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="bg-slate-950 text-white">
+    <div class="container mx-auto px-6 py-14">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 text-blue-300 text-sm font-semibold uppercase tracking-wider">
+          <i class="fa-solid fa-newspaper"></i>
+          <span>Newsroom Archive</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold mt-3">Corex Team News</h1>
+        <p class="text-gray-300 mt-4 text-lg">
+          All updates, press releases, and announcements in one place.
+        </p>
+
+        <div class="mt-8 grid md:grid-cols-3 gap-3">
+          <div class="md:col-span-2">
+            <label class="text-sm text-gray-300">Search</label>
+            <div class="mt-2 flex items-center gap-2 bg-white/10 rounded px-3 py-2 border border-white/10">
+              <i class="fa-solid fa-magnifying-glass text-gray-300"></i>
+              <input id="search"
+                     class="w-full bg-transparent outline-none text-white placeholder:text-gray-400"
+                     placeholder="Search title, content, author…"
+                     autocomplete="off" />
+            </div>
+          </div>
+
+          <div>
+            <label class="text-sm text-gray-300">Sort</label>
+            <select id="sort"
+                    class="mt-2 w-full bg-white/10 border border-white/10 text-white rounded px-3 py-2 outline-none">
+              <option value="newest" selected>Newest first</option>
+              <option value="oldest">Oldest first</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-4 text-sm text-gray-400">
+          <span id="meta-count">—</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="bg-slate-100 flex-1">
+    <div class="container mx-auto px-6 py-12">
+
+      <!-- STATUS -->
+      <div id="status" class="mb-6">
+        <div class="bg-white border border-gray-200 rounded p-4 text-gray-700 flex items-center gap-3">
+          <div class="inline-block animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+          <span>Loading news…</span>
+        </div>
+      </div>
+
+      <!-- ERROR -->
+      <div id="error" class="hidden mb-6">
+        <div class="bg-red-50 border border-red-200 rounded p-4 text-red-700 flex items-start gap-3">
+          <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+          <div>
+            <div class="font-bold">Couldn’t load news</div>
+            <div id="error-msg" class="text-sm mt-1"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div id="news-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+
+      <!-- EMPTY -->
+      <div id="empty" class="hidden text-center py-14">
+        <div class="text-gray-700 font-bold text-xl">No posts found</div>
+        <div class="text-gray-500 mt-2">Try a different search term.</div>
+      </div>
+
+      <!-- LOAD MORE -->
+      <div class="flex justify-center mt-10">
+        <button id="load-more"
+                class="hidden bg-white border border-gray-200 px-6 py-3 rounded font-semibold hover:bg-gray-50 transition">
+          Load more
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- MODAL -->
+  <div id="modal" class="hidden fixed inset-0 bg-black/60 z-50 items-center justify-center p-4">
+    <div class="bg-white w-full max-w-3xl rounded-lg shadow-xl overflow-hidden">
+      <div class="flex justify-between items-start p-6 border-b">
+        <div>
+          <div class="text-xs font-bold text-blue-600 uppercase tracking-wide">News Update</div>
+          <h2 id="modal-title" class="text-2xl font-bold text-gray-900 mt-1">—</h2>
+          <div class="text-sm text-gray-500 mt-2">
+            <span id="modal-date">—</span> · <span id="modal-author">—</span>
+          </div>
+        </div>
+        <button id="modal-close" class="text-gray-500 hover:text-gray-900 text-xl px-2">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="p-6">
+        <p id="modal-content" class="text-gray-700 leading-relaxed whitespace-pre-wrap"></p>
+      </div>
+      <div class="p-6 border-t bg-gray-50 flex justify-end">
+        <button id="modal-ok"
+                class="bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-gray-300 py-12 mt-auto">
+    <div class="container mx-auto px-6 grid md:grid-cols-4 gap-8">
+      <div>
+        <h5 class="text-white font-bold text-lg mb-4">Corex Team</h5>
+        <p class="text-sm text-gray-400">Building the future of lightweight computing.</p>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Product</h5>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://github.com/The-Corex-Project/Corex-Linux" class="hover:text-white">Corex Linux</a></li>
+          <li><a href="documentation.html" class="hover:text-white">Documentation</a></li>
+          <li><a href="https://github.com/The-Corex-Project/Corex-Linux/releases" class="hover:text-white">Release Notes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Company</h5>
+        <ul class="space-y-2 text-sm">
+          <li><a href="index.html#about" class="hover:text-white">About Us</a></li>
+          <li><a href="careers.html" class="hover:text-white">Careers</a></li>
+          <li><a href="news.html" class="hover:text-white">News</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Contact Me (or us)</h5>
+        <div class="flex space-x-4">
+          <a href="https://github.com/The-Corex-Project/" class="hover:text-white text-xl"><i class="fa-brands fa-github"></i></a>
+          <a href="mailto:walter.muller.1708@gmail.com" class="hover:text-white text-xl"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-6 mt-12 pt-8 border-t border-gray-800 text-sm text-center">
+      &copy; 2025 Corex Team. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // ------------------------------------------
+    // SUPABASE KEYS (same as your index.html)
+    // ------------------------------------------
+    const supabaseUrl = 'https://jqpjauqimurndzpcunym.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxcGphdXFpbXVybmR6cGN1bnltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU3MDc3NzYsImV4cCI6MjA4MTI4Mzc3Nn0.tggjvD7KS5Y4zJnXJcPhbkYCh6zFoN-QdIX2-gagWyY'
+    // ------------------------------------------
+
+    if (typeof supabase === 'undefined') {
+      const errorBox = document.getElementById('error')
+      const errorMsg = document.getElementById('error-msg')
+      document.getElementById('status').classList.add('hidden')
+      errorBox.classList.remove('hidden')
+      errorMsg.textContent = 'Supabase library not loaded. Check your connection or script tag.'
+      throw new Error('Supabase not loaded')
+    }
+
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey)
+
+    // UI
+    const grid = document.getElementById('news-grid')
+    const statusBox = document.getElementById('status')
+    const errorBox = document.getElementById('error')
+    const errorMsg = document.getElementById('error-msg')
+    const emptyBox = document.getElementById('empty')
+    const loadMoreBtn = document.getElementById('load-more')
+    const metaCount = document.getElementById('meta-count')
+    const searchInput = document.getElementById('search')
+    const sortSelect = document.getElementById('sort')
+
+    // Modal
+    const modal = document.getElementById('modal')
+    const modalTitle = document.getElementById('modal-title')
+    const modalDate = document.getElementById('modal-date')
+    const modalAuthor = document.getElementById('modal-author')
+    const modalContent = document.getElementById('modal-content')
+    const modalClose = document.getElementById('modal-close')
+    const modalOk = document.getElementById('modal-ok')
+
+    // State
+    let allPosts = []
+    let visibleCount = 0
+    const PAGE_SIZE = 9
+
+    function formatDate(ts) {
+      try {
+        return new Date(ts).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      } catch {
+        return '—'
+      }
+    }
+
+    function setLoading(on) {
+      statusBox.classList.toggle('hidden', !on)
+    }
+
+    function setError(message) {
+      errorBox.classList.remove('hidden')
+      errorMsg.textContent = message
+    }
+
+    function clearError() {
+      errorBox.classList.add('hidden')
+      errorMsg.textContent = ''
+    }
+
+    function openModal(post) {
+      modalTitle.textContent = post.title ?? '(untitled)'
+      modalDate.textContent = formatDate(post.created_at)
+      modalAuthor.textContent = post.author || 'Corex Team'
+      modalContent.textContent = post.content ?? ''
+      modal.classList.remove('hidden')
+      modal.classList.add('flex')
+      document.body.style.overflow = 'hidden'
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden')
+      modal.classList.remove('flex')
+      document.body.style.overflow = ''
+    }
+
+    modalClose.addEventListener('click', closeModal)
+    modalOk.addEventListener('click', closeModal)
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal() })
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal()
+    })
+
+    function createCard(post) {
+      const card = document.createElement('div')
+      card.className = "bg-white p-6 rounded shadow hover:shadow-lg transition flex flex-col h-full border border-gray-100"
+
+      const tag = document.createElement('div')
+      tag.className = "text-xs font-bold text-blue-600 uppercase tracking-wide mb-2"
+      tag.textContent = "News Update"
+
+      const title = document.createElement('h3')
+      title.className = "text-xl font-bold text-gray-900 mb-3"
+      title.textContent = post.title ?? "(untitled)"
+
+      const excerpt = document.createElement('p')
+      excerpt.className = "text-gray-600 mb-4 flex-grow"
+      const text = (post.content ?? '').trim()
+      excerpt.textContent = text.length > 220 ? text.slice(0, 220) + "…" : text
+
+      const btn = document.createElement('button')
+      btn.className = "mt-1 inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 transition"
+      btn.innerHTML = '<i class="fa-regular fa-eye"></i><span>Open</span>'
+      btn.addEventListener('click', () => openModal(post))
+
+      const footer = document.createElement('div')
+      footer.className = "flex justify-between items-center text-sm text-gray-400 border-t pt-4 mt-4"
+
+      const left = document.createElement('span')
+      left.textContent = formatDate(post.created_at)
+
+      const right = document.createElement('span')
+      right.textContent = post.author || "Corex Team"
+
+      footer.append(left, right)
+      card.append(tag, title, excerpt, btn, footer)
+      return card
+    }
+
+    function applyFilterAndSort(posts) {
+      const q = (searchInput.value || '').toLowerCase().trim()
+      const sortMode = sortSelect.value
+
+      let filtered = posts
+      if (q) {
+        filtered = posts.filter(p => {
+          const t = (p.title ?? '').toLowerCase()
+          const c = (p.content ?? '').toLowerCase()
+          const a = (p.author ?? '').toLowerCase()
+          return t.includes(q) || c.includes(q) || a.includes(q)
+        })
+      }
+
+      filtered.sort((a, b) => {
+        const da = new Date(a.created_at).getTime()
+        const db = new Date(b.created_at).getTime()
+        return sortMode === 'oldest' ? (da - db) : (db - da)
+      })
+
+      return filtered
+    }
+
+    function render(reset = false) {
+      const posts = applyFilterAndSort([...allPosts])
+
+      if (reset) {
+        visibleCount = 0
+        grid.innerHTML = ''
+      }
+
+      if (posts.length === 0) {
+        emptyBox.classList.remove('hidden')
+        loadMoreBtn.classList.add('hidden')
+        metaCount.textContent = '0 posts'
+        return
+      } else {
+        emptyBox.classList.add('hidden')
+      }
+
+      const remaining = posts.length - visibleCount
+      const take = Math.min(PAGE_SIZE, remaining)
+      const slice = posts.slice(visibleCount, visibleCount + take)
+
+      slice.forEach(p => grid.appendChild(createCard(p)))
+      visibleCount += take
+
+      metaCount.textContent = `${posts.length} post${posts.length === 1 ? '' : 's'}`
+      loadMoreBtn.classList.toggle('hidden', visibleCount >= posts.length)
+    }
+
+    loadMoreBtn.addEventListener('click', () => render(false))
+    searchInput.addEventListener('input', () => render(true))
+    sortSelect.addEventListener('change', () => render(true))
+
+    async function fetchAllNews() {
+      clearError()
+      setLoading(true)
+
+      const { data, error } = await supabaseClient
+        .from('news')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(500)
+
+      setLoading(false)
+
+      if (error) {
+        console.error('Supabase Error:', error)
+        setError(error.message || 'Unknown error.')
+        return
+      }
+
+      allPosts = Array.isArray(data) ? data : []
+      render(true)
+    }
+
+    fetchAllNews()
+  </script>
+
+</body>
+</html>

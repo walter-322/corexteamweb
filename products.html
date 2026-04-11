@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corex Team | Projects</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: #2563eb;
+      transition: width 0.3s;
+    }
+    .nav-link:hover::after { width: 100%; }
+  </style>
+</head>
+
+<body class="bg-white text-gray-800 flex flex-col min-h-screen">
+
+  <!-- NAVIGATION BAR -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Corex_Team.png" alt="Corex Logo" class="h-10">
+      </a>
+
+      <div class="hidden md:flex space-x-8 font-medium text-gray-600">
+        <a href="index.html" class="nav-link hover:text-blue-600">Home</a>
+        <a href="documentation.html" class="nav-link hover:text-blue-600">Docs</a>
+        <a href="careers.html" class="nav-link hover:text-blue-600">Join Us</a>
+        <a href="developers.html" class="nav-link hover:text-blue-600">Developers</a>
+      </div>
+
+      <a href="projects.html"
+         class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition">
+        Projects
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="bg-slate-950 text-white">
+    <div class="container mx-auto px-6 py-14">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 text-blue-300 text-sm font-semibold uppercase tracking-wider">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Corex Projects</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold mt-3">What we build</h1>
+        <p class="text-gray-300 mt-4 text-lg">
+          A collection of OS, tools, and open source experiments under Corex Team.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="bg-slate-100 flex-1">
+    <div class="container mx-auto px-6 py-12">
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        <!-- Corex Linux -->
+        <div class="bg-white p-7 rounded shadow hover:shadow-lg transition border-t-4 border-blue-600 flex flex-col">
+          <div class="text-blue-600 text-4xl mb-4"><i class="fa-brands fa-linux"></i></div>
+          <h3 class="text-2xl font-bold mb-2">Corex Linux</h3>
+          <p class="text-gray-600 mb-5 flex-grow">
+            Lightweight OS built for performance and older hardware. Community-driven.
+          </p>
+          <div class="flex gap-3">
+            <a href="https://github.com/The-Corex-Project/Corex-Linux"
+               class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 transition">
+              Repository
+            </a>
+            <a href="https://github.com/The-Corex-Project/Corex-Linux/releases"
+               class="border border-gray-200 px-4 py-2 rounded font-semibold hover:bg-gray-50 transition">
+              Releases
+            </a>
+          </div>
+        </div>
+
+        <!-- Corex Tools -->
+        <div class="bg-white p-7 rounded shadow hover:shadow-lg transition border-t-4 border-purple-600 flex flex-col">
+          <div class="text-purple-600 text-4xl mb-4"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+          <h3 class="text-2xl font-bold mb-2">Corex Tools</h3>
+          <p class="text-gray-600 mb-5 flex-grow">
+            Scripts and developer utilities for building, packaging, and maintaining Corex projects.
+          </p>
+          <a href="https://github.com/The-Corex-Project/"
+             class="text-purple-700 font-semibold hover:underline">
+            Browse on GitHub &rarr;
+          </a>
+        </div>
+
+        <!-- Community Repos -->
+        <div class="bg-white p-7 rounded shadow hover:shadow-lg transition border-t-4 border-green-600 flex flex-col">
+          <div class="text-green-600 text-4xl mb-4"><i class="fa-solid fa-people-group"></i></div>
+          <h3 class="text-2xl font-bold mb-2">Community Repositories</h3>
+          <p class="text-gray-600 mb-5 flex-grow">
+            Members can create their own repositories under the org and build together.
+          </p>
+          <a href="developers.html" class="text-green-700 font-semibold hover:underline">
+            How to contribute &rarr;
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Callout -->
+      <section class="mt-12 bg-white p-8 rounded shadow border border-gray-100">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900">Want your project listed here?</h2>
+            <p class="text-gray-600 mt-2">
+              Join Corex Team and we’ll add your repository to the Projects page.
+            </p>
+          </div>
+          <a href="careers.html"
+             class="bg-blue-600 text-white px-6 py-3 rounded font-bold hover:bg-blue-700 transition inline-flex items-center gap-2">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Join Us</span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-900 text-gray-300 py-12 mt-auto">
+    <div class="container mx-auto px-6 grid md:grid-cols-4 gap-8">
+      <div>
+        <h5 class="text-white font-bold text-lg mb-4">Corex Team</h5>
+        <p class="text-sm text-gray-400">Building the future of lightweight computing.</p>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Product</h5>
+        <ul class="space-y-2 text-sm">
+          <li><a href="https://github.com/The-Corex-Project/Corex-Linux" class="hover:text-white">Corex Linux</a></li>
+          <li><a href="documentation.html" class="hover:text-white">Documentation</a></li>
+          <li><a href="https://github.com/The-Corex-Project/Corex-Linux/releases" class="hover:text-white">Release Notes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Company</h5>
+        <ul class="space-y-2 text-sm">
+          <li><a href="index.html#about" class="hover:text-white">About Us</a></li>
+          <li><a href="careers.html" class="hover:text-white">Careers</a></li>
+          <li><a href="news.html" class="hover:text-white">News</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Contact</h5>
+        <div class="flex space-x-4">
+          <a href="https://github.com/The-Corex-Project/" class="hover:text-white text-xl"><i class="fa-brands fa-github"></i></a>
+          <a href="mailto:walter.muller.1708@gmail.com" class="hover:text-white text-xl"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto px-6 mt-12 pt-8 border-t border-gray-800 text-sm text-center">
+      &copy; 2025 Corex Team. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>
