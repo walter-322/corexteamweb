@@ -8,8 +8,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
     .nav-link { position: relative; }
     .nav-link::after {
       content: '';
@@ -22,25 +26,44 @@
       transition: width 0.3s;
     }
     .nav-link:hover::after { width: 100%; }
+
+    /* Card fade-in animation */
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .project-card {
+      animation: cardIn 0.4s ease both;
+    }
+
+    /* Skeleton shimmer */
+    @keyframes shimmer {
+      0%   { background-position: -600px 0; }
+      100% { background-position:  600px 0; }
+    }
+    .skeleton {
+      background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+      background-size: 600px 100%;
+      animation: shimmer 1.4s infinite linear;
+      border-radius: 6px;
+    }
   </style>
 </head>
 
 <body class="bg-white text-gray-800 flex flex-col min-h-screen">
 
-  <!-- NAVIGATION BAR -->
+  <!-- ───────────────────────── NAVIGATION ───────────────────────── -->
   <nav class="bg-white shadow-sm sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
       <a href="index.html" class="flex items-center gap-3">
         <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Corex_Team.png" alt="Corex Logo" class="h-10">
       </a>
-
       <div class="hidden md:flex space-x-8 font-medium text-gray-600">
-        <a href="index.html" class="nav-link hover:text-blue-600">Home</a>
+        <a href="index.html"        class="nav-link hover:text-blue-600">Home</a>
         <a href="documentation.html" class="nav-link hover:text-blue-600">Docs</a>
-        <a href="careers.html" class="nav-link hover:text-blue-600">Join Us</a>
-        <a href="developers.html" class="nav-link hover:text-blue-600">Developers</a>
+        <a href="careers.html"      class="nav-link hover:text-blue-600">Join Us</a>
+        <a href="developers.html"   class="nav-link hover:text-blue-600">Developers</a>
       </div>
-
       <a href="projects.html"
          class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition">
         Projects
@@ -48,7 +71,7 @@
     </div>
   </nav>
 
-  <!-- HERO -->
+  <!-- ───────────────────────── HERO ───────────────────────── -->
   <header class="bg-slate-950 text-white">
     <div class="container mx-auto px-6 py-14">
       <div class="max-w-3xl">
@@ -64,56 +87,45 @@
     </div>
   </header>
 
-  <!-- CONTENT -->
+  <!-- ───────────────────────── CONTENT ───────────────────────── -->
   <main class="bg-slate-100 flex-1">
     <div class="container mx-auto px-6 py-12">
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        <!-- Corex Linux -->
-        <div class="bg-white p-7 rounded shadow hover:shadow-lg transition border-t-4 border-blue-600 flex flex-col">
-          <div class="text-blue-600 text-4xl mb-4"><i class="fa-brands fa-linux"></i></div>
-          <h3 class="text-2xl font-bold mb-2">Corex Linux</h3>
-          <p class="text-gray-600 mb-5 flex-grow">
-            Lightweight OS built for performance and older hardware. Community-driven.
-          </p>
-          <div class="flex gap-3">
-            <a href="https://github.com/The-Corex-Project/Corex-Linux"
-               class="bg-blue-600 text-white px-4 py-2 rounded font-semibold hover:bg-blue-700 transition">
-              Repository
-            </a>
-            <a href="https://github.com/The-Corex-Project/Corex-Linux/releases"
-               class="border border-gray-200 px-4 py-2 rounded font-semibold hover:bg-gray-50 transition">
-              Releases
-            </a>
-          </div>
+      <!-- Project grid — populated by JS -->
+      <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Skeleton cards while loading -->
+        <div class="bg-white p-7 rounded shadow border-t-4 border-slate-200 flex flex-col gap-4">
+          <div class="skeleton h-10 w-10 rounded-full"></div>
+          <div class="skeleton h-6 w-2/3"></div>
+          <div class="skeleton h-4 w-full"></div>
+          <div class="skeleton h-4 w-5/6"></div>
         </div>
-
-        <!-- Corex Tools -->
-        <div class="bg-white p-7 rounded shadow hover:shadow-lg transition border-t-4 border-purple-600 flex flex-col">
-          <div class="text-purple-600 text-4xl mb-4"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-          <h3 class="text-2xl font-bold mb-2">Corex Tools</h3>
-          <p class="text-gray-600 mb-5 flex-grow">
-            Scripts and developer utilities for building, packaging, and maintaining Corex projects.
-          </p>
-          <a href="https://github.com/The-Corex-Project/"
-             class="text-purple-700 font-semibold hover:underline">
-            Browse on GitHub &rarr;
-          </a>
+        <div class="bg-white p-7 rounded shadow border-t-4 border-slate-200 flex flex-col gap-4">
+          <div class="skeleton h-10 w-10 rounded-full"></div>
+          <div class="skeleton h-6 w-2/3"></div>
+          <div class="skeleton h-4 w-full"></div>
+          <div class="skeleton h-4 w-5/6"></div>
         </div>
-
-        <!-- Community Repos -->
-        <div class="bg-white p-7 rounded shadow hover:shadow-lg transition border-t-4 border-green-600 flex flex-col">
-          <div class="text-green-600 text-4xl mb-4"><i class="fa-solid fa-people-group"></i></div>
-          <h3 class="text-2xl font-bold mb-2">Community Repositories</h3>
-          <p class="text-gray-600 mb-5 flex-grow">
-            Members can create their own repositories under the org and build together.
-          </p>
-          <a href="developers.html" class="text-green-700 font-semibold hover:underline">
-            How to contribute &rarr;
-          </a>
+        <div class="bg-white p-7 rounded shadow border-t-4 border-slate-200 flex flex-col gap-4">
+          <div class="skeleton h-10 w-10 rounded-full"></div>
+          <div class="skeleton h-6 w-2/3"></div>
+          <div class="skeleton h-4 w-full"></div>
+          <div class="skeleton h-4 w-5/6"></div>
         </div>
+      </div>
 
+      <!-- Error state (hidden by default) -->
+      <div id="projects-error" class="hidden mt-8 bg-red-50 border border-red-200 text-red-700 rounded p-6 text-center">
+        <i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
+        <p class="font-semibold">Couldn't load projects</p>
+        <p id="projects-error-msg" class="text-sm mt-1 text-red-500"></p>
+      </div>
+
+      <!-- Empty state (hidden by default) -->
+      <div id="projects-empty" class="hidden mt-8 text-center text-gray-400 py-16">
+        <i class="fa-solid fa-box-open text-5xl mb-4"></i>
+        <p class="text-lg font-medium">No projects yet.</p>
+        <p class="text-sm mt-1">Add a row to the <code class="bg-gray-100 px-1 rounded">projects</code> table in Supabase.</p>
       </div>
 
       <!-- Callout -->
@@ -122,7 +134,7 @@
           <div>
             <h2 class="text-2xl font-bold text-gray-900">Want your project listed here?</h2>
             <p class="text-gray-600 mt-2">
-              Join Corex Team and we’ll add your repository to the Projects page.
+              Join Corex Team and we'll add your repository to the Projects page.
             </p>
           </div>
           <a href="careers.html"
@@ -136,14 +148,13 @@
     </div>
   </main>
 
-  <!-- FOOTER -->
+  <!-- ───────────────────────── FOOTER ───────────────────────── -->
   <footer class="bg-gray-900 text-gray-300 py-12 mt-auto">
     <div class="container mx-auto px-6 grid md:grid-cols-4 gap-8">
       <div>
         <h5 class="text-white font-bold text-lg mb-4">Corex Team</h5>
         <p class="text-sm text-gray-400">Building the future of lightweight computing.</p>
       </div>
-
       <div>
         <h5 class="text-white font-bold mb-4">Product</h5>
         <ul class="space-y-2 text-sm">
@@ -152,7 +163,6 @@
           <li><a href="https://github.com/The-Corex-Project/Corex-Linux/releases" class="hover:text-white">Release Notes</a></li>
         </ul>
       </div>
-
       <div>
         <h5 class="text-white font-bold mb-4">Company</h5>
         <ul class="space-y-2 text-sm">
@@ -161,7 +171,6 @@
           <li><a href="news.html" class="hover:text-white">News</a></li>
         </ul>
       </div>
-
       <div>
         <h5 class="text-white font-bold mb-4">Contact</h5>
         <div class="flex space-x-4">
@@ -170,11 +179,116 @@
         </div>
       </div>
     </div>
-
     <div class="container mx-auto px-6 mt-12 pt-8 border-t border-gray-800 text-sm text-center">
       &copy; 2025 Corex Team. All rights reserved.
     </div>
   </footer>
+
+  <!-- ───────────────────────── SUPABASE LOGIC ───────────────────────── -->
+  <script>
+    // ┌─────────────────────────────────────────────────────────────┐
+    // │  🔧 CONFIGURE YOUR SUPABASE CREDENTIALS HERE               │
+    // └─────────────────────────────────────────────────────────────┘
+    const SUPABASE_URL  = 'https://nmjihkyqwfrwvlntcuek.supabase.co';  // ← replace
+    const SUPABASE_KEY  = 'sb_publishable_bJ5fasAa3uZGEWYR3TpgJQ_up1J5aRv';                 // ← replace
+
+    // Map colour names to Tailwind classes (extend as needed)
+    const COLOR_MAP = {
+      blue:   { border: 'border-blue-600',   text: 'text-blue-600',   btn: 'bg-blue-600 hover:bg-blue-700',   link: 'text-blue-700'   },
+      purple: { border: 'border-purple-600', text: 'text-purple-600', btn: 'bg-purple-600 hover:bg-purple-700', link: 'text-purple-700' },
+      green:  { border: 'border-green-600',  text: 'text-green-600',  btn: 'bg-green-600 hover:bg-green-700',  link: 'text-green-700'  },
+      red:    { border: 'border-red-600',    text: 'text-red-600',    btn: 'bg-red-600 hover:bg-red-700',      link: 'text-red-700'    },
+      orange: { border: 'border-orange-500', text: 'text-orange-500', btn: 'bg-orange-500 hover:bg-orange-600', link: 'text-orange-600' },
+      yellow: { border: 'border-yellow-500', text: 'text-yellow-500', btn: 'bg-yellow-500 hover:bg-yellow-600', link: 'text-yellow-600' },
+      teal:   { border: 'border-teal-600',   text: 'text-teal-600',   btn: 'bg-teal-600 hover:bg-teal-700',   link: 'text-teal-700'   },
+      indigo: { border: 'border-indigo-600', text: 'text-indigo-600', btn: 'bg-indigo-600 hover:bg-indigo-700', link: 'text-indigo-700' },
+    };
+
+    function getColor(name) {
+      return COLOR_MAP[name] ?? COLOR_MAP['blue'];
+    }
+
+    function buildCard(project, index) {
+      const c = getColor(project.color);
+
+      // Primary button (repo link)
+      const repoBtn = project.repo_url
+        ? `<a href="${project.repo_url}"
+              class="${c.btn} text-white px-4 py-2 rounded font-semibold transition">
+             Repository
+           </a>`
+        : '';
+
+      // Secondary button (releases link)
+      const releasesBtn = project.releases_url
+        ? `<a href="${project.releases_url}"
+              class="border border-gray-200 px-4 py-2 rounded font-semibold hover:bg-gray-50 transition">
+             Releases
+           </a>`
+        : '';
+
+      // Text link (alternative CTA)
+      const textLink = project.link_label && project.link_url
+        ? `<a href="${project.link_url}" class="${c.link} font-semibold hover:underline">
+             ${project.link_label}
+           </a>`
+        : '';
+
+      // Decide what buttons/links to show
+      let actions = '';
+      if (repoBtn || releasesBtn) {
+        actions = `<div class="flex gap-3 flex-wrap">${repoBtn}${releasesBtn}</div>`;
+      } else if (textLink) {
+        actions = textLink;
+      }
+
+      return `
+        <div class="project-card bg-white p-7 rounded shadow hover:shadow-lg transition ${c.border} border-t-4 flex flex-col"
+             style="animation-delay: ${index * 80}ms">
+          <div class="${c.text} text-4xl mb-4">
+            <i class="${project.icon ?? 'fa-solid fa-cube'}"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-2">${project.name}</h3>
+          <p class="text-gray-600 mb-5 flex-grow">${project.description ?? ''}</p>
+          ${actions}
+        </div>`;
+    }
+
+    async function loadProjects() {
+      const grid  = document.getElementById('projects-grid');
+      const error = document.getElementById('projects-error');
+      const empty = document.getElementById('projects-empty');
+
+      try {
+        const { createClient } = supabase;
+        const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const { data: projects, error: dbError } = await db
+          .from('projects')
+          .select('*')
+          .order('created_at', { ascending: true });
+
+        if (dbError) throw dbError;
+
+        grid.innerHTML = ''; // clear skeletons
+
+        if (!projects || projects.length === 0) {
+          empty.classList.remove('hidden');
+          return;
+        }
+
+        grid.innerHTML = projects.map((p, i) => buildCard(p, i)).join('');
+
+      } catch (err) {
+        console.error('Supabase error:', err);
+        grid.innerHTML = '';
+        error.classList.remove('hidden');
+        document.getElementById('projects-error-msg').textContent = err.message ?? String(err);
+      }
+    }
+
+    loadProjects();
+  </script>
 
 </body>
 </html>
