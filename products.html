@@ -192,15 +192,15 @@
     const SUPABASE_URL  = 'https://nmjihkyqwfrwvlntcuek.supabase.co';  // ← replace
     const SUPABASE_KEY  = 'sb_publishable_bJ5fasAa3uZGEWYR3TpgJQ_up1J5aRv';                 // ← replace
 
-    // Map colour names to Tailwind classes (extend as needed)
+    // Map colour names to Tailwind classes
     const COLOR_MAP = {
-      blue:   { border: 'border-blue-600',   text: 'text-blue-600',   btn: 'bg-blue-600 hover:bg-blue-700',   link: 'text-blue-700'   },
+      blue:   { border: 'border-blue-600',   text: 'text-blue-600',   btn: 'bg-blue-600 hover:bg-blue-700',     link: 'text-blue-700'   },
       purple: { border: 'border-purple-600', text: 'text-purple-600', btn: 'bg-purple-600 hover:bg-purple-700', link: 'text-purple-700' },
-      green:  { border: 'border-green-600',  text: 'text-green-600',  btn: 'bg-green-600 hover:bg-green-700',  link: 'text-green-700'  },
-      red:    { border: 'border-red-600',    text: 'text-red-600',    btn: 'bg-red-600 hover:bg-red-700',      link: 'text-red-700'    },
+      green:  { border: 'border-green-600',  text: 'text-green-600',  btn: 'bg-green-600 hover:bg-green-700',   link: 'text-green-700'  },
+      red:    { border: 'border-red-600',    text: 'text-red-600',    btn: 'bg-red-600 hover:bg-red-700',       link: 'text-red-700'    },
       orange: { border: 'border-orange-500', text: 'text-orange-500', btn: 'bg-orange-500 hover:bg-orange-600', link: 'text-orange-600' },
       yellow: { border: 'border-yellow-500', text: 'text-yellow-500', btn: 'bg-yellow-500 hover:bg-yellow-600', link: 'text-yellow-600' },
-      teal:   { border: 'border-teal-600',   text: 'text-teal-600',   btn: 'bg-teal-600 hover:bg-teal-700',   link: 'text-teal-700'   },
+      teal:   { border: 'border-teal-600',   text: 'text-teal-600',   btn: 'bg-teal-600 hover:bg-teal-700',    link: 'text-teal-700'   },
       indigo: { border: 'border-indigo-600', text: 'text-indigo-600', btn: 'bg-indigo-600 hover:bg-indigo-700', link: 'text-indigo-700' },
     };
 
@@ -211,30 +211,18 @@
     function buildCard(project, index) {
       const c = getColor(project.color);
 
-      // Primary button (repo link)
       const repoBtn = project.repo_url
-        ? `<a href="${project.repo_url}"
-              class="${c.btn} text-white px-4 py-2 rounded font-semibold transition">
-             Repository
-           </a>`
+        ? `<a href="${project.repo_url}" class="${c.btn} text-white px-4 py-2 rounded font-semibold transition">Repository</a>`
         : '';
 
-      // Secondary button (releases link)
       const releasesBtn = project.releases_url
-        ? `<a href="${project.releases_url}"
-              class="border border-gray-200 px-4 py-2 rounded font-semibold hover:bg-gray-50 transition">
-             Releases
-           </a>`
+        ? `<a href="${project.releases_url}" class="border border-gray-200 px-4 py-2 rounded font-semibold hover:bg-gray-50 transition">Releases</a>`
         : '';
 
-      // Text link (alternative CTA)
       const textLink = project.link_label && project.link_url
-        ? `<a href="${project.link_url}" class="${c.link} font-semibold hover:underline">
-             ${project.link_label}
-           </a>`
+        ? `<a href="${project.link_url}" class="${c.link} font-semibold hover:underline">${project.link_label}</a>`
         : '';
 
-      // Decide what buttons/links to show
       let actions = '';
       if (repoBtn || releasesBtn) {
         actions = `<div class="flex gap-3 flex-wrap">${repoBtn}${releasesBtn}</div>`;
@@ -245,13 +233,29 @@
       return `
         <div class="project-card bg-white p-7 rounded shadow hover:shadow-lg transition ${c.border} border-t-4 flex flex-col"
              style="animation-delay: ${index * 80}ms">
-          <div class="${c.text} text-4xl mb-4">
-            <i class="${project.icon ?? 'fa-solid fa-cube'}"></i>
-          </div>
+          <div class="${c.text} text-4xl mb-4"><i class="${project.icon ?? 'fa-solid fa-cube'}"></i></div>
           <h3 class="text-2xl font-bold mb-2">${project.name}</h3>
           <p class="text-gray-600 mb-5 flex-grow">${project.description ?? ''}</p>
           ${actions}
         </div>`;
+    }
+
+    // ── Debug helper: shown only when data is empty so you know WHY ──
+    function showDebug(info) {
+      const box = document.createElement('div');
+      box.className = 'mt-6 bg-yellow-50 border border-yellow-300 rounded p-5 text-sm text-yellow-900 font-mono';
+      box.innerHTML = `
+        <p class="font-bold text-yellow-800 mb-2">🔍 Debug info (remove before going live)</p>
+        <ul class="space-y-1 list-disc list-inside">
+          ${info.map(i => `<li>${i}</li>`).join('')}
+        </ul>
+        <p class="mt-3 font-bold">Most likely fix: RLS is blocking anon reads.</p>
+        <p class="mt-1">In Supabase → Authentication → Policies, run:</p>
+        <pre class="bg-yellow-100 rounded p-2 mt-2 whitespace-pre-wrap">create policy "public read"
+on projects for select
+to anon
+using (true);</pre>`;
+      document.getElementById('projects-grid').after(box);
     }
 
     async function loadProjects() {
@@ -259,21 +263,37 @@
       const error = document.getElementById('projects-error');
       const empty = document.getElementById('projects-empty');
 
+      // Guard: placeholder credentials still in place
+      if (SUPABASE_URL.includes('YOUR_PROJECT_ID') || SUPABASE_KEY.includes('YOUR_ANON')) {
+        grid.innerHTML = '';
+        error.classList.remove('hidden');
+        document.getElementById('projects-error-msg').textContent =
+          'SUPABASE_URL and SUPABASE_KEY are still placeholders — replace them in the <script> block.';
+        return;
+      }
+
       try {
         const { createClient } = supabase;
         const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        const { data: projects, error: dbError } = await db
+        const { data: projects, error: dbError, status, statusText } = await db
           .from('projects')
           .select('*')
           .order('created_at', { ascending: true });
 
-        if (dbError) throw dbError;
-
         grid.innerHTML = ''; // clear skeletons
+
+        if (dbError) throw dbError;
 
         if (!projects || projects.length === 0) {
           empty.classList.remove('hidden');
+          // Show debug panel so the user knows what happened
+          showDebug([
+            `HTTP status: ${status} ${statusText ?? ''}`,
+            'Supabase returned 0 rows — your row exists but something is blocking it.',
+            'Table name used: <strong>projects</strong> — make sure it matches exactly.',
+            'RLS (Row Level Security) is ON by default and silently hides rows from anonymous users.',
+          ]);
           return;
         }
 
