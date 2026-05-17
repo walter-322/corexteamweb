@@ -230,10 +230,12 @@
         actions = textLink;
       }
 
-      const isUrl = project.icon && (project.icon.startsWith('http') || project.icon.startsWith('/'));
+      const rawIcon = (project.icon ?? '').trim();
+      const isUrl = rawIcon.startsWith('http') || rawIcon.startsWith('/');
+      console.log(`[${project.name}] icon value:`, JSON.stringify(rawIcon), '| isUrl:', isUrl);
       const iconHtml = isUrl
-        ? `<img src="${project.icon}" alt="${project.name} icon" class="w-10 h-10 object-contain mb-4" />`
-        : `<div class="${c.text} text-4xl mb-4"><i class="${project.icon ?? 'fa-solid fa-cube'}"></i></div>`;
+        ? `<img src="${rawIcon}" alt="${project.name} icon" class="w-10 h-10 object-contain mb-4" onerror="this.style.outline='2px solid red';this.title='Failed to load: ${rawIcon}'" />`
+        : `<div class="${c.text} text-4xl mb-4"><i class="${rawIcon || 'fa-solid fa-cube'}"></i></div>`;
 
       return `
         <div class="project-card bg-white p-7 rounded shadow hover:shadow-lg transition ${c.border} border-t-4 flex flex-col"
