@@ -189,8 +189,8 @@
     // ┌─────────────────────────────────────────────────────────────┐
     // │  🔧 CONFIGURE YOUR SUPABASE CREDENTIALS HERE               │
     // └─────────────────────────────────────────────────────────────┘
-    const SUPABASE_URL  = 'https://nmjihkyqwfrwvlntcuek.supabase.co';  // ← replace
-    const SUPABASE_KEY  = 'sb_publishable_bJ5fasAa3uZGEWYR3TpgJQ_up1J5aRv';                 // ← replace
+    const SUPABASE_URL  = 'https://YOUR_PROJECT_ID.supabase.co';  // ← replace
+    const SUPABASE_KEY  = 'YOUR_ANON_PUBLIC_KEY';                 // ← replace
 
     // Map colour names to Tailwind classes
     const COLOR_MAP = {
@@ -230,10 +230,15 @@
         actions = textLink;
       }
 
+      const isUrl = project.icon && (project.icon.startsWith('http') || project.icon.startsWith('/'));
+      const iconHtml = isUrl
+        ? `<img src="${project.icon}" alt="${project.name} icon" class="w-10 h-10 object-contain mb-4" />`
+        : `<div class="${c.text} text-4xl mb-4"><i class="${project.icon ?? 'fa-solid fa-cube'}"></i></div>`;
+
       return `
         <div class="project-card bg-white p-7 rounded shadow hover:shadow-lg transition ${c.border} border-t-4 flex flex-col"
              style="animation-delay: ${index * 80}ms">
-          <div class="${c.text} text-4xl mb-4"><i class="${project.icon ?? 'fa-solid fa-cube'}"></i></div>
+          ${iconHtml}
           <h3 class="text-2xl font-bold mb-2">${project.name}</h3>
           <p class="text-gray-600 mb-5 flex-grow">${project.description ?? ''}</p>
           ${actions}
