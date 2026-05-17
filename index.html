@@ -40,12 +40,10 @@
   <!-- NAVIGATION BAR -->
   <nav class="bg-white shadow-sm sticky top-0 z-50">
     <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <!-- Logo Area -->
       <a href="#" class="flex items-center gap-3">
         <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Corex_Team.png" alt="Corex Logo" class="h-10">
       </a>
 
-      <!-- Desktop Menu -->
       <div class="hidden md:flex space-x-8 font-medium text-gray-600">      
         <a href="index.html" class="nav-link hover:text-blue-600">Home</a>
         <a href="documentation.html" class="nav-link hover:text-blue-600">Docs</a>
@@ -53,7 +51,6 @@
         <a href="developers.html" class="nav-link hover:text-blue-600">Developers</a>
       </div>
 
-      <!-- CTA Button -->
        This Website has been visited <span id="visitor-count" class="text-gray-900 font-semibold">—</span> times!
       <a href="https://github.com/The-Corex-Team/Corex-Linux"
          class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition">
@@ -152,7 +149,6 @@
         <h5 class="text-white font-bold text-lg mb-4">Corex Team</h5>
         <p class="text-sm text-gray-400">Building the future of lightweight computing.</p>
       </div>
-
       <div>
         <h5 class="text-white font-bold mb-4">Product</h5>
         <ul class="space-y-2 text-sm">
@@ -161,7 +157,6 @@
           <li><a href="https://github.com/The-Corex-Team/Corex-Linux/releases" class="hover:text-white">Release Notes</a></li>
         </ul>
       </div>
-
       <div>
         <h5 class="text-white font-bold mb-4">Company</h5>
         <ul class="space-y-2 text-sm">
@@ -170,7 +165,6 @@
           <li><a href="#news" class="hover:text-white">News</a></li>
         </ul>
       </div>
-
       <div>
         <h5 class="text-white font-bold mb-4">Contact Me (or us)</h5>
         <div class="flex space-x-4">
@@ -179,7 +173,6 @@
         </div>
       </div>
     </div>
-
     <div class="container mx-auto px-6 mt-12 pt-8 border-t border-gray-800 text-sm text-center">
       &copy; 2025 Corex Team&trade;. All rights reserved.
     </div>
@@ -187,27 +180,18 @@
 
   <!-- JAVASCRIPT -->
   <script>
-  // ------------------------------------------
-  // SUPABASE KEYS
-  // ------------------------------------------
   const supabaseUrl = 'https://nmjihkyqwfrwvlntcuek.supabase.co'
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5tamloa3lxd2Zyd3ZsbnRjdWVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyMzQ5MzIsImV4cCI6MjA5MDgxMDkzMn0.FTQH90EJkkDYN5ddFa6kSmGqrTlHHQLn42sA_jSj5MA'
-  // ------------------------------------------
 
-  // 1) Ensure Supabase is available
   if (typeof supabase === 'undefined') {
     const nf = document.getElementById('news-feed')
-    if (nf) {
-      nf.innerHTML =
-        '<p class="text-red-600 font-bold">Error: Supabase library not loaded. Check your internet connection.</p>'
-    }
+    if (nf) nf.innerHTML = '<p class="text-red-600 font-bold">Error: Supabase library not loaded.</p>'
   }
 
-  // 2) Initialize client
   const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey)
 
   // ------------------------------
-  // PROJECTS FETCH (from Supabase)
+  // PROJECTS FETCH
   // ------------------------------
   async function fetchProjects() {
     const container = document.getElementById('projects-feed')
@@ -219,7 +203,6 @@
       .order('created_at', { ascending: false })
 
     if (error) {
-      console.error("Supabase Error:", error)
       container.innerHTML = `<p class="text-red-600">Error loading projects: ${error.message}</p>`
       return
     }
@@ -232,9 +215,16 @@
     container.innerHTML = ''
 
     data.forEach(project => {
+      // ── Icon: URL → <img>, FA class → <i>, fallback → default icon ──
+      const rawIcon = (project.icon || '').trim()
+      const isUrl = rawIcon.startsWith('http') || rawIcon.startsWith('/')
+      const iconHtml = isUrl
+        ? `<img src="${rawIcon}" alt="${project.name || project.title} icon" class="w-10 h-10 object-contain mb-4" />`
+        : `<div class="text-blue-600 text-4xl mb-4"><i class="${rawIcon || 'fa-solid fa-diagram-project'}"></i></div>`
+
       const html = `
         <div class="bg-white p-8 rounded shadow hover:shadow-xl transition border-t-4 border-blue-600 flex flex-col h-full">
-          <div class="text-blue-600 text-4xl mb-4"><i class="fa-solid fa-diagram-project"></i></div>
+          ${iconHtml}
           <h3 class="text-2xl font-bold mb-3">${project.name || project.title}</h3>
           <p class="text-gray-600 mb-6 flex-grow">${project.description || ''}</p>
           ${project.url ? `<a href="${project.url}" class="text-blue-600 font-semibold hover:underline">View Project &rarr;</a>` : ''}
@@ -258,7 +248,6 @@
       .limit(6)
 
     if (error) {
-      console.error("Supabase Error:", error)
       feedContainer.innerHTML = `<p class="text-red-600">Error loading news: ${error.message}</p>`
       return
     }
@@ -275,44 +264,28 @@
         year: 'numeric', month: 'long', day: 'numeric'
       })
 
-      const html = `
-          <div class="bg-white p-6 rounded shadow hover:shadow-lg transition flex flex-col h-full border border-gray-100">
-            <div class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">News Update</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-3">${post.title}</h3>
-            <p class="text-gray-600 mb-4 flex-grow line-clamp-3">
-              ${post.content}
-            </p>
-            <div class="flex justify-between items-center text-sm text-gray-400 border-t pt-4 mt-auto">
-              <span>${date}</span>
-              <span>${post.author || 'Corex Team'}</span>
-            </div>
+      feedContainer.innerHTML += `
+        <div class="bg-white p-6 rounded shadow hover:shadow-lg transition flex flex-col h-full border border-gray-100">
+          <div class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">News Update</div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">${post.title}</h3>
+          <p class="text-gray-600 mb-4 flex-grow line-clamp-3">${post.content}</p>
+          <div class="flex justify-between items-center text-sm text-gray-400 border-t pt-4 mt-auto">
+            <span>${date}</span>
+            <span>${post.author || 'Corex Team'}</span>
           </div>
-        `
-      
-      feedContainer.innerHTML += html
+        </div>
+      `
     })
   }
 
   // ------------------------------
-  // GLOBAL VISIT COUNTER
+  // VISITOR COUNTER
   // ------------------------------
   async function showCounterOnly() {
     const el = document.getElementById("visitor-count")
     if (!el) return
-
-    const { data, error } = await supabaseClient
-      .from("site_counter")
-      .select("visits")
-      .eq("id", 1)
-      .single()
-
-    if (error || !data) {
-      console.warn("Counter read failed:", error?.message)
-      el.textContent = "—"
-      return
-    }
-
-    el.textContent = String(data.visits)
+    const { data, error } = await supabaseClient.from("site_counter").select("visits").eq("id", 1).single()
+    el.textContent = (error || !data) ? "—" : String(data.visits)
   }
 
   async function incrementAndShowVisitorCount() {
@@ -323,45 +296,21 @@
     const last = Number(sessionStorage.getItem(throttleKey) || 0)
     const now = Date.now()
 
-    if (now - last < 10_000) {
-      await showCounterOnly()
-      return
-    }
+    if (now - last < 10_000) { await showCounterOnly(); return }
     sessionStorage.setItem(throttleKey, String(now))
 
-    const { data, error } = await supabaseClient
-      .from("site_counter")
-      .select("visits")
-      .eq("id", 1)
-      .single()
-
-    if (error || !data) {
-      console.warn("Counter read failed:", error?.message)
-      el.textContent = "—"
-      return
-    }
+    const { data, error } = await supabaseClient.from("site_counter").select("visits").eq("id", 1).single()
+    if (error || !data) { el.textContent = "—"; return }
 
     const next = Number(data.visits) + 1
-
-    const { error: upErr } = await supabaseClient
-      .from("site_counter")
-      .update({ visits: next, updated_at: new Date().toISOString() })
-      .eq("id", 1)
-
-    if (upErr) {
-      console.warn("Counter update failed:", upErr.message)
-      el.textContent = String(data.visits)
-      return
-    }
-
-    el.textContent = String(next)
+    const { error: upErr } = await supabaseClient.from("site_counter").update({ visits: next, updated_at: new Date().toISOString() }).eq("id", 1)
+    el.textContent = upErr ? String(data.visits) : String(next)
   }
 
-  // Run on load
   fetchProjects()
   fetchNews()
   incrementAndShowVisitorCount()
-</script>
+  </script>
 
 </body>
 </html>
