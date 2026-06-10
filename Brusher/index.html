@@ -1,1 +1,514 @@
-.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brusher | Corex Team</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+    /* Nav underline animation — same as Corex index */
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -5px;
+      left: 0;
+      background-color: #2563eb;
+      transition: width 0.3s;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Hero */
+    .hero-bg {
+      background: linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.72)),
+        url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* App card hover lift */
+    .app-card {
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .app-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.10);
+    }
+
+    /* Subtle fade-in on load */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.6s ease both; }
+    .delay-1 { animation-delay: 0.10s; }
+    .delay-2 { animation-delay: 0.22s; }
+    .delay-3 { animation-delay: 0.34s; }
+    .delay-4 { animation-delay: 0.46s; }
+
+    /* Platform badge */
+    .platform-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(37,99,235,0.08);
+      border: 1px solid rgba(37,99,235,0.20);
+      color: #1d4ed8;
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    /* Download buttons */
+    .dl-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #2563eb;
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.30);
+    }
+    .dl-btn-primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(37,99,235,0.38);
+    }
+    .dl-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,0.35);
+      padding: 13px 24px;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      backdrop-filter: blur(4px);
+    }
+    .dl-btn-secondary:hover {
+      background: rgba(255,255,255,0.22);
+      transform: translateY(-2px);
+    }
+
+    /* Download section cards */
+    .dl-card {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .dl-card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.09); border-color: #93c5fd; }
+    .dl-card-icon { font-size: 2rem; color: #2563eb; min-width: 40px; }
+    .dl-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #2563eb;
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 7px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    .dl-card-btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+  </style>
+</head>
+
+<body class="bg-white text-gray-800 flex flex-col min-h-screen">
+
+  <!-- ══════════════════════════════
+       NAVIGATION  (matches Corex index)
+  ══════════════════════════════ -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Corex_Team.png"
+             alt="Corex Logo" class="h-10">
+        <span class="text-gray-300 font-light text-lg select-none">|</span>
+        <img src="https://nmjihkyqwfrwvlntcuek.supabase.co/storage/v1/object/public/Corex%20Team/Brusher.svg"
+             alt="Brusher Logo" class="h-8 w-8">
+        <span class="font-bold text-gray-800 text-base">Brusher</span>
+      </a>
+
+      <div class="hidden md:flex space-x-8 font-medium text-gray-600">
+        <a href="index.html"        class="nav-link hover:text-blue-600">Home</a>
+        <a href="documentation.html" class="nav-link hover:text-blue-600">Docs</a>
+        <a href="careers.html"      class="nav-link hover:text-blue-600">Join Us</a>
+        <a href="developers.html"   class="nav-link hover:text-blue-600">Developers</a>
+      </div>
+
+      <a href="https://github.com/The-Corex-Team/"
+         class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition">
+        GitHub
+      </a>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════
+       HERO
+  ══════════════════════════════ -->
+  <header class="hero-bg min-h-[480px] flex items-center justify-center text-center text-white px-4 py-20">
+    <div class="max-w-3xl fade-up">
+      <!-- Brusher Logo -->
+      <div class="flex justify-center mb-6">
+        <img src="https://nmjihkyqwfrwvlntcuek.supabase.co/storage/v1/object/public/Corex%20Team/Brusher.svg"
+             alt="Brusher Logo"
+             class="h-24 w-24 drop-shadow-lg" />
+      </div>
+      <span class="platform-badge mb-6 inline-flex" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.30);color:#e0e7ff;">
+        <i class="fa-brands fa-windows"></i> Windows &nbsp;·&nbsp;
+        <i class="fa-brands fa-apple"></i> macOS &nbsp;·&nbsp;
+        <i class="fa-brands fa-linux"></i> Linux
+      </span>
+      <h1 class="text-5xl md:text-6xl font-bold mb-5 leading-tight">Brusher</h1>
+      <p class="text-xl text-gray-200 mb-8">
+        A minimal Free Drawing Editor inspired by Paint, Photoshop and Krita.
+        It is still very small due to Alpha but works good. I personally liked it :)
+      </p>
+      <!-- Hero download buttons — injected by OS detection script -->
+      <div id="hero-download" class="flex justify-center gap-3 flex-wrap mb-5"></div>
+
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href="#apps" class="bg-white text-gray-900 px-7 py-3 rounded text-base font-bold hover:bg-gray-100 transition">
+          Explore Apps
+        </a>
+        <a href="#download" class="dl-btn-secondary text-base">
+          All Downloads
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════
+       APPS SECTION
+  ══════════════════════════════ -->
+
+  <!-- ══════════════════════════════
+       ABOUT / PHILOSOPHY SECTION
+  ══════════════════════════════ -->
+  <section id="about" class="py-20 bg-white">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+
+      <div class="md:w-1/2">
+        <img
+          src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop"
+          alt="Clean workspace"
+          class="rounded shadow-lg"
+        />
+      </div>
+
+      <div class="md:w-1/2">
+        <h4 class="text-blue-600 font-bold uppercase tracking-wide mb-2">Philosophy</h4>
+        <h2 class="text-4xl font-bold mb-6 text-gray-900">Lightweight by design.</h2>
+        <p class="text-lg text-gray-600 mb-4">
+          Brusher was built on a single principle: software should serve you, not slow you down.
+          Every application in the suite is intentionally minimal — no subscription nags,
+          no unnecessary features, no performance overhead.
+        </p>
+        <p class="text-lg text-gray-600 mb-6">
+          Available across Windows, macOS, and Ubuntu, the suite is designed to feel at home
+          on any machine — from a brand-new workstation to older hardware that deserves better software.
+        </p>
+        <div class="flex gap-6">
+          <div class="border-l-4 border-blue-600 pl-4">
+            <span class="block text-2xl font-bold text-gray-900">3</span>
+            <span class="text-sm text-gray-500">Applications</span>
+          </div>
+          <div class="border-l-4 border-blue-600 pl-4">
+            <span class="block text-2xl font-bold text-gray-900">3</span>
+            <span class="text-sm text-gray-500">Platforms</span>
+          </div>
+          <div class="border-l-4 border-blue-600 pl-4">
+            <span class="block text-2xl font-bold text-gray-900">0</span>
+            <span class="text-sm text-gray-500">Bloat</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       PLATFORM SUPPORT BANNER
+  ══════════════════════════════ -->
+  <section class="bg-blue-600 py-14 text-white text-center">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold mb-3">Available on every major platform</h2>
+      <p class="text-blue-100 mb-8 max-w-lg mx-auto">
+        One suite, three platforms. Install Brusher on Windows, macOS, or Linux (Ubuntu)
+        and get the same clean experience everywhere.
+      </p>
+      <div class="flex justify-center gap-10 text-4xl opacity-90">
+        <div class="flex flex-col items-center gap-2">
+          <i class="fa-brands fa-windows"></i>
+          <span class="text-sm font-semibold tracking-wide">Windows</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <i class="fa-brands fa-apple"></i>
+          <span class="text-sm font-semibold tracking-wide">macOS</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <i class="fa-brands fa-ubuntu"></i>
+          <span class="text-sm font-semibold tracking-wide">Ubuntu</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       DOWNLOAD SECTION
+  ══════════════════════════════ -->
+  <section id="download" class="py-20 bg-white">
+    <div class="container mx-auto px-6 max-w-3xl">
+      <h2 class="text-3xl font-bold mb-3 text-center">Download Brusher</h2>
+      <p id="download-subtext" class="text-center text-gray-500 mb-12 max-w-md mx-auto">
+        Choose your platform below to get started.
+      </p>
+
+      <!-- Download cards — rendered by JS -->
+      <div id="download-cards" class="flex flex-col gap-4"></div>
+
+      <!-- "Other platforms" toggle (shown when OS was detected) -->
+      <div id="other-platforms-wrapper" class="mt-8 text-center hidden">
+        <button id="toggle-other"
+                onclick="toggleOtherPlatforms()"
+                class="text-blue-600 font-semibold hover:underline text-sm">
+          Show all platforms &darr;
+        </button>
+        <div id="other-platforms" class="hidden mt-6 flex flex-col gap-4"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       SUPPORT SECTION
+  ══════════════════════════════ -->
+  <section id="support" class="py-20 bg-slate-100">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-4">Support &amp; Bug Reports</h2>
+      <p class="text-gray-600 mb-10 max-w-md mx-auto">
+        Found an issue or need help? Reach out to our support team directly.
+      </p>
+      <div class="flex justify-center gap-6 flex-wrap">
+
+        <a href="#"
+           class="bg-white border border-gray-200 rounded shadow px-8 py-6 flex flex-col items-center gap-3 hover:shadow-lg hover:border-blue-300 transition w-52">
+          <div class="text-blue-600 text-3xl"><i class="fa-solid fa-headset"></i></div>
+          <div>
+            <div class="font-bold text-gray-900">debug64x</div>
+            <div class="text-sm text-gray-500 mt-1">Support &amp; Inquiries</div>
+          </div>
+        </a>
+
+        <a href="#"
+           class="bg-white border border-gray-200 rounded shadow px-8 py-6 flex flex-col items-center gap-3 hover:shadow-lg hover:border-blue-300 transition w-52">
+          <div class="text-blue-600 text-3xl"><i class="fa-solid fa-bug"></i></div>
+          <div>
+            <div class="font-bold text-gray-900">walter-322</div>
+            <div class="text-sm text-gray-500 mt-1">Bug Reports</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════
+       FOOTER  (matches Corex index)
+  ══════════════════════════════ -->
+  <footer class="bg-gray-900 text-gray-300 py-12 mt-auto">
+    <div class="container mx-auto px-6 grid md:grid-cols-4 gap-8">
+
+      <div>
+        <h5 class="text-white font-bold text-lg mb-4">Brusher</h5>
+        <p class="text-sm text-gray-400">A lightweight productivity suite by Corex Team.</p>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Corex Team</h5>
+        <ul class="space-y-2 text-sm">
+          <li><a href="index.html"        class="hover:text-white">Home</a></li>
+          <li><a href="documentation.html" class="hover:text-white">Documentation</a></li>
+          <li><a href="careers.html"      class="hover:text-white">Careers</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="text-white font-bold mb-4">Contact</h5>
+        <div class="flex space-x-4">
+          <a href="https://github.com/The-Corex-Team/" class="hover:text-white text-xl">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="mailto:walter.muller.1708@gmail.com" class="hover:text-white text-xl">
+            <i class="fa-solid fa-envelope"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+    <div class="container mx-auto px-6 mt-12 pt-8 border-t border-gray-800 text-sm text-center">
+      &copy; 2025 Corex Team&trade;. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- ══════════════════════════════
+       OS DETECTION + DOWNLOAD SCRIPT
+  ══════════════════════════════ -->
+  <script>
+  // ── Download definitions ──────────────────────────────────────────────────
+  // Replace the href values with your real download URLs when available.
+  const DOWNLOADS = {
+    windows: {
+      label: 'Download for Windows',
+      sublabel: 'x64 · .exe installer',
+      icon: 'fa-brands fa-windows',
+      href: 'https://nmjihkyqwfrwvlntcuek.supabase.co/storage/v1/object/public/Corex%20Team/CharacterObe_Setup_v1.0.0_x64.exe',
+    },
+    macos: {
+      label: 'Download for macOS',
+      sublabel: 'x64 · .zip archive',
+      icon: 'fa-brands fa-apple',
+      href: 'https://nmjihkyqwfrwvlntcuek.supabase.co/storage/v1/object/public/Corex%20Team/Character_Obe__macOS_x64.zip',
+    },
+    linux: {
+      label: 'Download for Linux',
+      sublabel: 'x64 · .zip archive',
+      icon: 'fa-brands fa-linux',
+      href: 'https://nmjihkyqwfrwvlntcuek.supabase.co/storage/v1/object/public/Corex%20Team/Character_Obe__Linux_x64.zip',
+    },
+  };
+
+  // ── OS detection via userAgentData (modern) + userAgent fallback ──────────
+  function detectOS() {
+    const ua = navigator.userAgent || '';
+
+    // Modern browsers expose this
+    if (navigator.userAgentData && navigator.userAgentData.platform) {
+      const p = navigator.userAgentData.platform.toLowerCase();
+      if (p.includes('win'))   return 'windows';
+      if (p.includes('mac'))   return 'macos';
+      if (p.includes('linux')) return 'linux';
+    }
+
+    // Fallback to classic userAgent string
+    if (/windows/i.test(ua))        return 'windows';
+    if (/macintosh|mac os x/i.test(ua)) return 'macos';
+    if (/linux/i.test(ua))          return 'linux';
+
+    return null; // unknown
+  }
+
+  // ── Build a single download card element ─────────────────────────────────
+  function buildCard(key, highlight) {
+    const d = DOWNLOADS[key];
+    const card = document.createElement('div');
+    card.className = 'dl-card' + (highlight ? ' border-blue-400' : '');
+    if (highlight) card.style.boxShadow = '0 4px 20px rgba(37,99,235,0.12)';
+
+    card.innerHTML = `
+      <div class="dl-card-icon"><i class="${d.icon}"></i></div>
+      <div class="flex-grow">
+        <div class="font-bold text-gray-900 text-lg">${d.label}</div>
+        <div class="text-sm text-gray-500 mt-0.5">${d.sublabel}</div>
+        ${highlight ? '<span class="inline-block mt-2 text-xs font-semibold text-blue-600 bg-blue-50 border border-blue-200 rounded-full px-3 py-0.5">Recommended for your system</span>' : ''}
+      </div>
+      <a href="${d.href}" class="dl-card-btn">
+        <i class="fa-solid fa-download"></i> Download
+      </a>
+    `;
+    return card;
+  }
+
+  // ── Build a compact hero button ───────────────────────────────────────────
+  function buildHeroBtn(key) {
+    const d = DOWNLOADS[key];
+    const a = document.createElement('a');
+    a.href = d.href;
+    a.className = 'dl-btn-primary';
+    a.innerHTML = `<i class="${d.icon}"></i> ${d.label}`;
+    return a;
+  }
+
+  // ── Toggle "other platforms" in the download section ─────────────────────
+  function toggleOtherPlatforms() {
+    const panel  = document.getElementById('other-platforms');
+    const btn    = document.getElementById('toggle-other');
+    const hidden = panel.classList.toggle('hidden');
+    panel.classList.toggle('flex',  !hidden);
+    panel.classList.toggle('flex-col', !hidden);
+    btn.innerHTML = hidden ? 'Show all platforms &darr;' : 'Hide other platforms &uarr;';
+  }
+
+  // ── Main render logic ─────────────────────────────────────────────────────
+  (function render() {
+    const os            = detectOS();
+    const cardsEl       = document.getElementById('download-cards');
+    const heroEl        = document.getElementById('hero-download');
+    const subtextEl     = document.getElementById('download-subtext');
+    const otherWrapper  = document.getElementById('other-platforms-wrapper');
+    const otherPanel    = document.getElementById('other-platforms');
+    const allKeys       = ['windows', 'macos', 'linux'];
+
+    if (os) {
+      // ── Detected OS: show that platform highlighted ──
+      subtextEl.textContent = `We detected you're on ${
+        os === 'windows' ? 'Windows' : os === 'macos' ? 'macOS' : 'Linux'
+      }. Your recommended download is ready.`;
+
+      // Hero button
+      heroEl.appendChild(buildHeroBtn(os));
+
+      // Highlighted primary card
+      cardsEl.appendChild(buildCard(os, true));
+
+      // Other platforms in the collapsible panel
+      allKeys.filter(k => k !== os).forEach(k => {
+        otherPanel.appendChild(buildCard(k, false));
+      });
+      otherWrapper.classList.remove('hidden');
+
+    } else {
+      // ── Unknown OS: show all platforms ──
+      subtextEl.textContent = "We couldn't detect your operating system. Pick your platform below.";
+
+      allKeys.forEach(k => {
+        // Hero buttons
+        heroEl.appendChild(buildHeroBtn(k));
+        // All cards
+        cardsEl.appendChild(buildCard(k, false));
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>
