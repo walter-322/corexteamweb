@@ -191,47 +191,80 @@
   const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey)
 
   // ------------------------------
-  // PROJECTS FETCH
+  // PROJECTS FETCH (local folders via projects.json)
   // ------------------------------
   async function fetchProjects() {
     const container = document.getElementById('projects-feed')
     if (!container) return
 
-    const { data, error } = await supabaseClient
-      .from('projects')
-      .select('*')
-      .order('created_at', { ascending: false })
-
-    if (error) {
-      container.innerHTML = `<p class="text-red-600">Error loading projects: ${error.message}</p>`
+    let manifest
+    try {
+      const res = await fetch('projects.json', { cache: 'no-store' })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      manifest = await res.json()
+    } catch (err) {
+      container.innerHTML = `<p class="text-red-600">Error loading projects: ${err.message}</p>`
       return
     }
 
-    if (!data || data.length === 0) {
+    const projects = Array.isArray(manifest.projects) ? manifest.projects : []
+    if (projects.length === 0) {
       container.innerHTML = '<p class="text-gray-500 italic col-span-3">No projects have been posted yet.</p>'
       return
     }
 
-    container.innerHTML = ''
+    // For each entry, try to pull the <title> from its folder's index.html.
+    // Falls back to a formatted folder name if the fetch fails (CORS, missing file, etc.).
+    // Render an icon: a URL/path to an image file → <img>; otherwise a Font Awesome class → <i>
+    function renderIcon(rawIcon, alt) {
+      const v = (rawIcon || '').trim()
+      if (!v) {
+        return `<div class="text-blue-600 text-4xl mb-4"><i class="fa-solid fa-diagram-project"></i></div>`
+      }
+      // Treat anything that looks like a file path / URL as an image.
+      // This covers: ./foo.png, foo.png, /foo.png, https://.../foo.svg, data:..., etc.
+      const isImagePath =
+        v.startsWith('http') ||
+        v.startsWith('/') ||
+        v.startsWith('./') ||
+        v.startsWith('../') ||
+        /\.(png|jpe?g|gif|svg|webp|bmp|avif|ico|tiff?|heic|heif)(\?.*)?$/i.test(v)
 
-    data.forEach(project => {
-      // ── Icon: URL → <img>, FA class → <i>, fallback → default icon ──
-      const rawIcon = (project.icon || '').trim()
-      const isUrl = rawIcon.startsWith('http') || rawIcon.startsWith('/')
-      const iconHtml = isUrl
-        ? `<img src="${rawIcon}" alt="${project.name || project.title} icon" class="w-10 h-10 object-contain mb-4" />`
-        : `<div class="text-blue-600 text-4xl mb-4"><i class="${rawIcon || 'fa-solid fa-diagram-project'}"></i></div>`
+      if (isImagePath) {
+        return `<img src="${v}" alt="${alt}" class="w-12 h-12 object-contain mb-4" />`
+      }
+      return `<div class="text-blue-600 text-4xl mb-4"><i class="${v}"></i></div>`
+    }
 
-      const html = `
+    const cards = await Promise.all(projects.map(async p => {
+      let title = p.name || p.folder
+      try {
+        const res = await fetch(`${p.folder}/index.html`, { cache: 'no-store' })
+        if (res.ok) {
+          const html = await res.text()
+          const m = html.match(/<title>([\s\S]*?)<\/title>/i)
+          if (m && m[1]) title = m[1].trim()
+        }
+      } catch (_) { /* keep fallback title */ }
+
+      // Strip trailing " | Corex Team" / " - Corex Team" suffixes for cleaner display
+      title = title.replace(/\s*[\|\-–—]\s*Corex Team\s*$/i, '').trim() || p.folder
+
+      const iconHtml = renderIcon(p.icon, title)
+      const url = `${p.folder}/index.html`
+      const description = p.description || ''
+
+      return `
         <div class="bg-white p-8 rounded shadow hover:shadow-xl transition border-t-4 border-blue-600 flex flex-col h-full">
           ${iconHtml}
-          <h3 class="text-2xl font-bold mb-3">${project.name || project.title}</h3>
-          <p class="text-gray-600 mb-6 flex-grow">${project.description || ''}</p>
-          ${project.url ? `<a href="${project.url}" class="text-blue-600 font-semibold hover:underline">View Project &rarr;</a>` : ''}
+          <h3 class="text-2xl font-bold mb-3">${title}</h3>
+          <p class="text-gray-600 mb-6 flex-grow">${description}</p>
+          <a href="${url}" class="text-blue-600 font-semibold hover:underline">Download &rarr;</a>
         </div>
       `
-      container.innerHTML += html
-    })
+    }))
+
+    container.innerHTML = cards.join('')
   }
 
   // ------------------------------

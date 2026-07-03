@@ -1,0 +1,11 @@
+{
+  "projects": [
+    {
+      "folder": "Brusher",
+      "name": "Brusher",
+      "description": "A lightweight painting and image-editing tool built for fast, distraction-free creative work.",
+      "icon": "./Brusher/Brusher.svg"
+    }
+    
+  ]
+}
