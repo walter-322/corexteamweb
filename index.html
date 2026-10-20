@@ -1,26 +1,44 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Corex Team | Your IT Team</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Corex Team builds independent, privacy-focused software that respects users, supports human creativity, and promotes digital freedom.">
+  <title>Corex Team | Privacy First. Software for People.</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <!-- Supabase Client -->
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
   <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
     .hero-bg {
-      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+      background:
+        linear-gradient(rgba(10, 18, 35, 0.82), rgba(10, 18, 35, 0.82)),
         url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop');
       background-size: cover;
       background-position: center;
     }
-    .nav-link { position: relative; }
+
+    .nav-link {
+      position: relative;
+    }
+
     .nav-link::after {
       content: '';
       position: absolute;
@@ -31,318 +49,914 @@
       background-color: #2563eb;
       transition: width 0.3s;
     }
-    .nav-link:hover::after { width: 100%; }
+
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after {
+      width: 100%;
+    }
+
+    .goal-card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .goal-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 
 <body class="bg-white text-gray-800 flex flex-col min-h-screen">
 
-  <!-- NAVIGATION BAR -->
+  <!-- NAVIGATION -->
   <nav class="bg-white shadow-sm sticky top-0 z-50">
-    <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#" class="flex items-center gap-3">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Corex_Team.png" alt="Corex Logo" class="h-10">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center gap-6">
+
+      <a href="index.html" class="flex items-center gap-3 shrink-0"
+         aria-label="Corex Team home">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Corex_Team.png"
+          alt="Corex Team logo"
+          class="h-10 w-auto"
+        >
       </a>
 
-      <div class="hidden md:flex space-x-8 font-medium text-gray-600">      
+      <div class="hidden lg:flex items-center space-x-7 font-medium text-gray-600">
         <a href="index.html" class="nav-link hover:text-blue-600">Home</a>
         <a href="documentation.html" class="nav-link hover:text-blue-600">Docs</a>
+        <a href="products.html" class="nav-link hover:text-blue-600">Projects</a>
+        <a href="#goals" class="nav-link hover:text-blue-600">Our Goals</a>
         <a href="careers.html" class="nav-link hover:text-blue-600">Join Us</a>
         <a href="developers.html" class="nav-link hover:text-blue-600">Developers</a>
       </div>
 
-       This Website has been visited <span id="visitor-count" class="text-gray-900 font-semibold">—</span> times!
-      <a href="https://github.com/The-Corex-Team/Corex-Linux"
-         class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition">
-        Get Corex Linux
+      <div class="hidden md:flex items-center gap-5">
+        <div class="text-sm text-gray-500 whitespace-nowrap">
+          Visitors:
+          <span id="visitor-count" class="text-gray-900 font-semibold">—</span>
+        </div>
+
+        <a
+          href="https://github.com/The-Corex-Team/Corex-Linux"
+          class="bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition whitespace-nowrap"
+        >
+          Get Corex Linux
+        </a>
+      </div>
+
+      <a href="#goals"
+         class="md:hidden text-blue-600 font-semibold whitespace-nowrap">
+        Our Goals
       </a>
+
     </div>
   </nav>
 
-  <!-- HERO SECTION -->
-  <header class="hero-bg h-[500px] flex items-center justify-center text-center text-white px-4">
-    <div class="max-w-4xl">
-      <h1 class="text-5xl md:text-6xl font-bold mb-6">Empowering Your Hardware</h1>
-      <p class="text-xl md:text-2xl mb-8 text-gray-200">
-        Corex Team is a passionate group of developers dedicated to building sustainable, high-performance software solutions for everyone.
-        We believe great software should be open, accessible, and built to last — with the majority of our projects being open source,
-        while some remain closed source.
-      </p>
-      <div class="flex justify-center gap-4">
-        <a href="products.html" class="bg-blue-600 px-8 py-3 rounded text-lg font-bold hover:bg-blue-700 transition">See Projects</a>
-        <a href="#about" class="bg-white text-gray-900 px-8 py-3 rounded text-lg font-bold hover:bg-gray-100 transition">Our Vision</a>
-      </div>
-    </div>
-  </header>
+  <main>
 
-  <!-- PROJECTS SECTION -->
-  <section id="projects" class="py-20 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <h2 class="text-3xl font-bold mb-12 text-center">Our Projects</h2>
+    <!-- HERO -->
+    <header class="hero-bg min-h-[500px] flex items-center justify-center text-center text-white px-6 py-20">
+      <div class="max-w-4xl">
 
-      <div id="projects-feed" class="grid md:grid-cols-3 gap-8">
-        <div class="col-span-3 text-center py-10">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-          <p class="mt-2 text-gray-500">Loading projects...</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT US SECTION -->
-  <section id="about" class="py-20 bg-white">
-    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
-      <div class="md:w-1/2">
-        <img
-          src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop"
-          alt="Team working"
-          class="rounded shadow-lg"
-        >
-      </div>
-      <div class="md:w-1/2">
-        <h4 class="text-blue-600 font-bold uppercase tracking-wide mb-2">About Us</h4>
-        <h2 class="text-4xl font-bold mb-6 text-gray-900">Innovation meets Preservation</h2>
-        <p class="text-lg text-gray-600 mb-4">
-          Founded in 2025, <strong>Corex Team</strong> is a dedicated group of software developers focused on crafting reliable, high-performance applications for a wide range of use cases — from operating systems and developer tooling to enterprise-grade software.
+        <p class="uppercase tracking-[0.25em] text-blue-300 font-bold text-sm mb-5">
+          Independent Software · Human Values
         </p>
-        <p class="text-lg text-gray-600 mb-6">
-          We are committed to quality, transparency, and community collaboration. Whether you're a developer looking to contribute or an organization in need of dependable software, Corex Team is here to deliver.
+
+        <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          Privacy First.<br>
+          Software for People.
+        </h1>
+
+        <p class="text-lg md:text-2xl mb-8 text-gray-200 leading-relaxed max-w-3xl mx-auto">
+          We build independent software designed to respect your privacy,
+          work efficiently, and give you more control over your digital life.
+          Technology should empower people — not exploit them.
         </p>
-        <div class="flex gap-4">
-          <div class="border-l-4 border-blue-600 pl-4">
-            <span class="block text-2xl font-bold text-gray-900">Global</span>
-            <span class="text-sm text-gray-500">Community Driven</span>
-          </div>
-          <div class="border-l-4 border-blue-600 pl-4">
-            <span class="block text-2xl font-bold text-gray-900">2025</span>
-            <span class="text-sm text-gray-500">Founded</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- NEWSROOM -->
-  <section id="news" class="py-20 bg-slate-100">
-    <div class="container mx-auto px-6">
-      <div class="flex justify-between items-end mb-12">
-        <div>
-          <h2 class="text-3xl font-bold text-gray-900">Newsroom</h2>
-          <p class="text-gray-600 mt-2">Latest updates, press releases, and announcements.</p>
-        </div>
-        <a href="news.html" class="text-blue-600 font-semibold hidden md:block">View Archive &rarr;</a>
-      </div>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a
+            href="products.html"
+            class="bg-blue-600 px-8 py-3 rounded text-lg font-bold hover:bg-blue-700 transition"
+          >
+            Explore Our Projects
+          </a>
 
-      <div id="news-feed" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="col-span-3 text-center py-10">
-          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-          <p class="mt-2 text-gray-500">Loading press releases...</p>
+          <a
+            href="#goals"
+            class="bg-white text-gray-900 px-8 py-3 rounded text-lg font-bold hover:bg-gray-100 transition"
+          >
+            What We Believe In
+          </a>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- OUR PROJECTS -->
+    <section id="projects" class="py-20 bg-gray-50">
+      <div class="container mx-auto px-6">
+
+        <div class="text-center mb-12">
+          <p class="text-blue-600 font-bold uppercase tracking-widest mb-3">
+            What We're Building
+          </p>
+
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+            Our Projects
+          </h2>
+
+          <p class="text-gray-600 mt-4 max-w-2xl mx-auto">
+            Practical software and independent projects built to explore
+            better ways of using technology.
+          </p>
+        </div>
+
+        <div id="projects-feed" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="md:col-span-2 lg:col-span-3 text-center py-10">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"
+                 aria-hidden="true"></div>
+            <p class="mt-2 text-gray-500">Loading projects...</p>
+          </div>
+        </div>
+
+        <div class="text-center mt-10">
+          <a href="products.html"
+             class="inline-block text-blue-600 font-semibold hover:underline">
+            View All Projects &rarr;
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ABOUT US -->
+    <section id="about" class="py-20 bg-white">
+      <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-12">
+
+        <div class="md:w-1/2">
+          <img
+            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop"
+            alt="People collaborating and working together"
+            loading="lazy"
+            class="rounded-xl shadow-lg w-full object-cover"
+          >
+        </div>
+
+        <div class="md:w-1/2">
+
+          <p class="text-blue-600 font-bold uppercase tracking-wide mb-3">
+            About Corex Team
+          </p>
+
+          <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
+            Technology Should Serve People
+          </h2>
+
+          <p class="text-lg text-gray-600 mb-4 leading-relaxed">
+            Founded in 2025, <strong>Corex Team</strong> is an independent
+            software development initiative built around a simple idea:
+            technology should respect the people who use it.
+          </p>
+
+          <p class="text-lg text-gray-600 mb-4 leading-relaxed">
+            We want to develop software that is private, efficient, accessible,
+            and useful in everyday life. We don't believe applications need
+            to collect unnecessary information, force unwanted features on
+            users, or make people dependent on a single provider.
+          </p>
+
+          <p class="text-lg text-gray-600 mb-4 leading-relaxed">
+            We value human creativity and responsible engineering.
+            AI tools can help us work more efficiently as a small team,
+            but technology should support human work rather than replace
+            human judgement, originality, and responsibility.
+          </p>
+
+          <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+            We also want to contribute to a world where people and
+            organisations have more freedom to choose their technology.
+            From Europe to the rest of the world, we believe independent
+            software and open standards can help reduce unnecessary
+            dependency on dominant technology providers.
+          </p>
+
+          <a
+            href="#goals"
+            class="inline-block bg-blue-600 text-white px-6 py-3 rounded font-semibold hover:bg-blue-700 transition"
+          >
+            Discover Our Goals &rarr;
+          </a>
+
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- OUR GOALS -->
+    <section id="goals" class="py-20 bg-white">
+      <div class="container mx-auto px-6 max-w-6xl">
+
+        <div class="text-center mb-14">
+          <p class="text-blue-600 font-bold uppercase tracking-widest mb-3">
+            What We Believe In
+          </p>
+
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-5">
+            Our Goals
+          </h2>
+
+          <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            We have a simple vision: protect people's privacy, develop
+            independent software, preserve human creativity, and help
+            build a more digitally independent future.
+          </p>
+        </div>
+
+        <div class="space-y-6">
+
+          <!-- GOAL 1: PRIVACY -->
+          <article class="goal-card bg-slate-100 rounded-2xl p-8 md:p-12
+                          flex flex-row items-center justify-between gap-6 md:gap-10
+                          min-h-64">
+
+            <div class="flex-1">
+              <p class="text-sm font-bold uppercase tracking-widest text-blue-600">
+                01 / Privacy
+              </p>
+
+              <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mt-3 mb-4">
+                Privacy First
+              </h3>
+
+              <p class="text-gray-700 text-base md:text-lg leading-relaxed max-w-2xl">
+                Your data belongs to you. We don't believe in collecting
+                personal information just because we can, and we don't
+                believe in selling people's data. Our goal is to build
+                software that respects your privacy, collects only what
+                is genuinely necessary, and keeps you in control.
+                Privacy shouldn't be a premium feature.
+              </p>
+            </div>
+
+            <div class="shrink-0 flex items-center justify-center
+                        w-14 h-14 md:w-32 md:h-32"
+                 aria-hidden="true">
+              <i class="fa-solid fa-shield-halved text-5xl md:text-8xl text-blue-600"></i>
+            </div>
+
+          </article>
+
+          <!-- GOAL 2: SOFTWARE -->
+          <article class="goal-card bg-blue-50 rounded-2xl p-8 md:p-12
+                          flex flex-row items-center justify-between gap-6 md:gap-10
+                          min-h-64">
+
+            <div class="flex-1">
+              <p class="text-sm font-bold uppercase tracking-widest text-blue-700">
+                02 / Software
+              </p>
+
+              <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mt-3 mb-4">
+                Independent Software
+              </h3>
+
+              <p class="text-gray-700 text-base md:text-lg leading-relaxed max-w-2xl">
+                We want to build independent, efficient software with
+                features that solve real problems. We value transparency,
+                open standards, and giving people the freedom to choose
+                their own tools. Software should work for its users —
+                without unnecessary complexity, unwanted features, or
+                forced dependence on a single company.
+              </p>
+            </div>
+
+            <div class="shrink-0 flex items-center justify-center
+                        w-14 h-14 md:w-32 md:h-32"
+                 aria-hidden="true">
+              <i class="fa-solid fa-code text-5xl md:text-8xl text-blue-700"></i>
+            </div>
+
+          </article>
+
+          <!-- GOAL 3: HUMAN CREATIVITY -->
+          <article class="goal-card bg-amber-50 rounded-2xl p-8 md:p-12
+                          flex flex-row items-center justify-between gap-6 md:gap-10
+                          min-h-64">
+
+            <div class="flex-1">
+              <p class="text-sm font-bold uppercase tracking-widest text-amber-700">
+                03 / Creativity
+              </p>
+
+              <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mt-3 mb-4">
+                Human Creativity Matters
+              </h3>
+
+              <p class="text-gray-700 text-base md:text-lg leading-relaxed max-w-2xl">
+                We recognise that AI can be useful, especially for small
+                development teams with limited resources. But we believe
+                technology should support people, not replace their
+                creativity and judgement. We value original ideas,
+                genuine effort, thoughtful engineering, and people who
+                take responsibility for the work they create.
+              </p>
+            </div>
+
+            <div class="shrink-0 flex items-center justify-center
+                        w-14 h-14 md:w-32 md:h-32"
+                 aria-hidden="true">
+              <i class="fa-solid fa-lightbulb text-5xl md:text-8xl text-amber-700"></i>
+            </div>
+
+          </article>
+
+          <!-- GOAL 4: DIGITAL INDEPENDENCE -->
+          <article class="goal-card bg-emerald-50 rounded-2xl p-8 md:p-12
+                          flex flex-row items-center justify-between gap-6 md:gap-10
+                          min-h-64">
+
+            <div class="flex-1">
+              <p class="text-sm font-bold uppercase tracking-widest text-emerald-700">
+                04 / Independence
+              </p>
+
+              <h3 class="text-2xl md:text-3xl font-bold text-gray-900 mt-3 mb-4">
+                Digital Independence
+              </h3>
+
+              <p class="text-gray-700 text-base md:text-lg leading-relaxed max-w-2xl">
+                We want Europe and the rest of the world to have more
+                freedom in choosing the technologies they depend on.
+                By supporting independent software, open standards,
+                and open-source projects, we aim to help reduce vendor
+                lock-in and unnecessary dependence on a small number
+                of dominant technology providers. We are not against
+                people from any country; we stand for freedom of choice.
+              </p>
+            </div>
+
+            <div class="shrink-0 flex items-center justify-center
+                        w-14 h-14 md:w-32 md:h-32"
+                 aria-hidden="true">
+              <i class="fa-solid fa-earth-europe text-5xl md:text-8xl text-emerald-700"></i>
+            </div>
+
+          </article>
+
+        </div>
+
+        <div class="text-center mt-12">
+          <p class="text-gray-600 text-lg mb-5">
+            These principles guide what we want Corex Team to become.
+          </p>
+
+          <a
+            href="https://github.com/The-Corex-Team/"
+            class="inline-block bg-gray-900 text-white px-7 py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
+          >
+            Explore Our Work on GitHub
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- NEWSROOM -->
+    <section id="news" class="py-20 bg-slate-100">
+      <div class="container mx-auto px-6">
+
+        <div class="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-12">
+          <div>
+            <p class="text-blue-600 font-bold uppercase tracking-widest mb-3">
+              From Our Team
+            </p>
+
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+              Newsroom
+            </h2>
+
+            <p class="text-gray-600 mt-3">
+              Project updates, announcements, and news from Corex Team.
+            </p>
+          </div>
+
+          <a href="news.html"
+             class="text-blue-600 font-semibold hover:underline">
+            View Archive &rarr;
+          </a>
+        </div>
+
+        <div id="news-feed" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="md:col-span-2 lg:col-span-3 text-center py-10">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"
+                 aria-hidden="true"></div>
+            <p class="mt-2 text-gray-500">Loading news...</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
 
   <!-- FOOTER -->
   <footer class="bg-gray-900 text-gray-300 py-12 mt-auto">
-    <div class="container mx-auto px-6 grid md:grid-cols-4 gap-8">
-      <div>
-        <h5 class="text-white font-bold text-lg mb-4">Corex Team</h5>
-        <p class="text-sm text-gray-400">Building the future of lightweight computing.</p>
-      </div>
-      <div>
-        <h5 class="text-white font-bold mb-4">Product</h5>
-        <ul class="space-y-2 text-sm">
-          <li><a href="https://github.com/The-Corex-Team/Corex-Linux" class="hover:text-white">Corex Linux</a></li>
-          <li><a href="documentation.html" class="hover:text-white">Documentation</a></li>
-          <li><a href="https://github.com/The-Corex-Team/Corex-Linux/releases" class="hover:text-white">Release Notes</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5 class="text-white font-bold mb-4">Company</h5>
-        <ul class="space-y-2 text-sm">
-          <li><a href="#about" class="hover:text-white">About Us</a></li>
-          <li><a href="careers.html" class="hover:text-white">Careers</a></li>
-          <li><a href="#news" class="hover:text-white">News</a></li>
-        </ul>
-      </div>
-      <div>
-        <h5 class="text-white font-bold mb-4">Contact Me (or us)</h5>
-        <div class="flex space-x-4">
-          <a href="https://github.com/The-Corex-Team/" class="hover:text-white text-xl"><i class="fa-brands fa-github"></i></a>
-          <a href="mailto:general.support@corexteam.org" class="hover:text-white text-xl"><i class="fa-solid fa-envelope"></i></a>
+    <div class="container mx-auto px-6">
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+
+        <div>
+          <h2 class="text-white font-bold text-lg mb-4">Corex Team</h2>
+
+          <p class="text-sm text-gray-400 leading-relaxed mb-4">
+            Independent software. Privacy first. Technology for people.
+          </p>
+
+          <p class="text-sm text-gray-500 leading-relaxed">
+            Building practical alternatives for a more open and
+            independent digital future.
+          </p>
         </div>
+
+        <div>
+          <h3 class="text-white font-bold mb-4">Projects</h3>
+
+          <ul class="space-y-3 text-sm">
+            <li>
+              <a href="https://github.com/The-Corex-Team/Corex-Linux"
+                 class="hover:text-white transition">
+                Corex Linux
+              </a>
+            </li>
+
+            <li>
+              <a href="products.html" class="hover:text-white transition">
+                All Projects
+              </a>
+            </li>
+
+            <li>
+              <a href="https://github.com/The-Corex-Team/Corex-Linux/releases"
+                 class="hover:text-white transition">
+                Release Notes
+              </a>
+            </li>
+
+            <li>
+              <a href="documentation.html" class="hover:text-white transition">
+                Documentation
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-white font-bold mb-4">Corex Team</h3>
+
+          <ul class="space-y-3 text-sm">
+            <li>
+              <a href="#about" class="hover:text-white transition">
+                About Us
+              </a>
+            </li>
+
+            <li>
+              <a href="#goals" class="hover:text-white transition">
+                Our Goals
+              </a>
+            </li>
+
+            <li>
+              <a href="careers.html" class="hover:text-white transition">
+                Join Us
+              </a>
+            </li>
+
+            <li>
+              <a href="developers.html" class="hover:text-white transition">
+                Developers
+              </a>
+            </li>
+
+            <li>
+              <a href="#news" class="hover:text-white transition">
+                Newsroom
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-white font-bold mb-4">Get in Touch</h3>
+
+          <p class="text-sm text-gray-400 mb-4">
+            Have a question, an idea, or want to contribute?
+            We'd be happy to hear from you.
+          </p>
+
+          <div class="flex items-center gap-5">
+            <a
+              href="https://github.com/The-Corex-Team/"
+              aria-label="Corex Team on GitHub"
+              class="hover:text-white text-2xl transition"
+            >
+              <i class="fa-brands fa-github" aria-hidden="true"></i>
+            </a>
+
+            <a
+              href="mailto:general.support@corexteam.org"
+              aria-label="Email Corex Team"
+              class="hover:text-white text-2xl transition"
+            >
+              <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+
       </div>
-    </div>
-    <div class="container mx-auto px-6 mt-12 pt-8 border-t border-gray-800 text-sm text-center">
-      &copy; 2025 Corex Team&trade;. All rights reserved.
+
+      <div class="mt-12 pt-8 border-t border-gray-800 text-sm text-center text-gray-500">
+        &copy; 2026 Corex Team. All rights reserved.
+      </div>
+
     </div>
   </footer>
 
   <!-- JAVASCRIPT -->
   <script>
-  const supabaseUrl = 'https://nmjihkyqwfrwvlntcuek.supabase.co'
-  const supabaseKey = 'sb_publishable_bJ5fasAa3uZGEWYR3TpgJQ_up1J5aRv'
+    // -----------------------------------------
+    // SUPABASE CONFIGURATION
+    // -----------------------------------------
+    const supabaseUrl = 'https://nmjihkyqwfrwvlntcuek.supabase.co';
+    const supabaseKey = 'sb_publishable_bJ5fasAa3uZGEWYR3TpgJQ_up1J5aRv';
 
-  if (typeof supabase === 'undefined') {
-    const nf = document.getElementById('news-feed')
-    if (nf) nf.innerHTML = '<p class="text-red-600 font-bold">Error: Supabase library not loaded.</p>'
-  }
+    // A publishable key is intended for browser use.
+    // Protect database access with correct Supabase RLS policies.
+    const supabaseClient =
+      typeof supabase !== 'undefined'
+        ? supabase.createClient(supabaseUrl, supabaseKey)
+        : null;
 
-  const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey)
-
-  // ------------------------------
-  // PROJECTS FETCH (local folders via projects.json)
-  // ------------------------------
-  async function fetchProjects() {
-    const container = document.getElementById('projects-feed')
-    if (!container) return
-
-    let manifest
-    try {
-      const res = await fetch('projects.json', { cache: 'no-store' })
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      manifest = await res.json()
-    } catch (err) {
-      container.innerHTML = `<p class="text-red-600">Error loading projects: ${err.message}</p>`
-      return
+    // -----------------------------------------
+    // HTML ESCAPING
+    // -----------------------------------------
+    // Escape dynamic text before inserting it into HTML.
+    function escapeHTML(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[character]);
     }
 
-    const projects = Array.isArray(manifest.projects) ? manifest.projects : []
-    if (projects.length === 0) {
-      container.innerHTML = '<p class="text-gray-500 italic col-span-3">No projects have been posted yet.</p>'
-      return
-    }
+    // Permit only HTTP(S) and relative URLs for links and images.
+    function safeURL(value) {
+      const url = String(value ?? '').trim();
 
-    // For each entry, try to pull the <title> from its folder's index.html.
-    // Falls back to a formatted folder name if the fetch fails (CORS, missing file, etc.).
-    // Render an icon: a URL/path to an image file → <img>; otherwise a Font Awesome class → <i>
-    function renderIcon(rawIcon, alt) {
-      const v = (rawIcon || '').trim()
-      if (!v) {
-        return `<div class="text-blue-600 text-4xl mb-4"><i class="fa-solid fa-diagram-project"></i></div>`
+      if (
+        /^(https?:\/\/|\/|\.\/|\.\.\/|#)/i.test(url) &&
+        !/^\/\//.test(url)
+      ) {
+        return escapeHTML(url);
       }
-      // Treat anything that looks like a file path / URL as an image.
-      // This covers: ./foo.png, foo.png, /foo.png, https://.../foo.svg, data:..., etc.
-      const isImagePath =
-        v.startsWith('http') ||
-        v.startsWith('/') ||
-        v.startsWith('./') ||
-        v.startsWith('../') ||
-        /\.(png|jpe?g|gif|svg|webp|bmp|avif|ico|tiff?|heic|heif)(\?.*)?$/i.test(v)
 
-      if (isImagePath) {
-        return `<img src="${v}" alt="${alt}" class="w-12 h-12 object-contain mb-4" />`
+      if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) {
+        return escapeHTML(url);
       }
-      return `<div class="text-blue-600 text-4xl mb-4"><i class="${v}"></i></div>`
-    }
 
-    const cards = await Promise.all(projects.map(async p => {
-      let title = p.name || p.folder
       try {
-        const res = await fetch(`${p.folder}/index.html`, { cache: 'no-store' })
-        if (res.ok) {
-          const html = await res.text()
-          const m = html.match(/<title>([\s\S]*?)<\/title>/i)
-          if (m && m[1]) title = m[1].trim()
+        const parsed = new URL(url, window.location.href);
+
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+          return escapeHTML(url);
         }
-      } catch (_) { /* keep fallback title */ }
+      } catch (_) {
+        // Invalid URL.
+      }
 
-      // Strip trailing " | Corex Team" / " - Corex Team" suffixes for cleaner display
-      title = title.replace(/\s*[\|\-–—]\s*Corex Team\s*$/i, '').trim() || p.folder
-
-      const iconHtml = renderIcon(p.icon, title)
-      const url = `${p.folder}/index.html`
-      const description = p.description || ''
-
-      return `
-        <div class="bg-white p-8 rounded shadow hover:shadow-xl transition border-t-4 border-blue-600 flex flex-col h-full">
-          ${iconHtml}
-          <h3 class="text-2xl font-bold mb-3">${title}</h3>
-          <p class="text-gray-600 mb-6 flex-grow">${description}</p>
-          <a href="${url}" class="text-blue-600 font-semibold hover:underline">Download &rarr;</a>
-        </div>
-      `
-    }))
-
-    container.innerHTML = cards.join('')
-  }
-
-  // ------------------------------
-  // NEWS FETCH
-  // ------------------------------
-  async function fetchNews() {
-    const feedContainer = document.getElementById('news-feed')
-    if (!feedContainer) return
-
-    const { data, error } = await supabaseClient
-      .from('news')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(6)
-
-    if (error) {
-      feedContainer.innerHTML = `<p class="text-red-600">Error loading news: ${error.message}</p>`
-      return
+      return '#';
     }
 
-    if (!data || data.length === 0) {
-      feedContainer.innerHTML = '<p class="text-gray-500 italic">No news has been posted yet.</p>'
-      return
+    // -----------------------------------------
+    // PROJECTS
+    // -----------------------------------------
+    async function fetchProjects() {
+      const container = document.getElementById('projects-feed');
+      if (!container) return;
+
+      try {
+        const response = await fetch('projects.json', {
+          cache: 'no-store'
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const manifest = await response.json();
+        const projects = Array.isArray(manifest.projects)
+          ? manifest.projects
+          : [];
+
+        if (projects.length === 0) {
+          container.innerHTML = `
+            <p class="text-gray-500 italic md:col-span-2 lg:col-span-3">
+              No projects have been posted yet.
+            </p>`;
+          return;
+        }
+
+        function renderIcon(rawIcon, title) {
+          const icon = String(rawIcon ?? '').trim();
+
+          if (!icon) {
+            return `
+              <div class="text-blue-600 text-4xl mb-4" aria-hidden="true">
+                <i class="fa-solid fa-diagram-project"></i>
+              </div>`;
+          }
+
+          const isImage =
+            /^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(icon) ||
+            /\.(png|jpe?g|gif|svg|webp|bmp|avif|ico)(\?.*)?$/i.test(icon);
+
+          if (isImage) {
+            return `
+              <img
+                src="${safeURL(icon)}"
+                alt="${escapeHTML(title)} icon"
+                loading="lazy"
+                class="w-12 h-12 object-contain mb-4"
+              >`;
+          }
+
+          // Accept only a limited Font Awesome class format.
+          const validIcon = icon.split(/\s+/).every(
+            token => /^[a-zA-Z0-9_-]+$/.test(token)
+          );
+
+          if (!validIcon) {
+            return `
+              <div class="text-blue-600 text-4xl mb-4" aria-hidden="true">
+                <i class="fa-solid fa-diagram-project"></i>
+              </div>`;
+          }
+
+          return `
+            <div class="text-blue-600 text-4xl mb-4" aria-hidden="true">
+              <i class="${escapeHTML(icon)}"></i>
+            </div>`;
+        }
+
+        const cards = await Promise.all(projects.map(async project => {
+          const folder = String(project.folder ?? '').trim();
+
+          let title = String(project.name || folder || 'Project');
+
+          // Only attempt local project folders.
+          if (
+            folder &&
+            !folder.startsWith('/') &&
+            !folder.startsWith('//') &&
+            !/^[a-z][a-z0-9+.-]*:/i.test(folder) &&
+            !folder.split('/').includes('..')
+          ) {
+            try {
+              const response = await fetch(
+                `${folder.replace(/\/+$/, '')}/index.html`,
+                { cache: 'no-store' }
+              );
+
+              if (response.ok) {
+                const html = await response.text();
+                const match = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+
+                if (match && match[1]) {
+                  const parsedTitle = document.createElement('textarea');
+                  parsedTitle.innerHTML = match[1];
+                  title = parsedTitle.value.trim() || title;
+                }
+              }
+            } catch (_) {
+              // Use the manifest title if the page is unavailable.
+            }
+          }
+
+          title = title.replace(/\s*[\|\-–—]\s*Corex Team\s*$/i, '').trim();
+
+          const description = String(project.description ?? '');
+          const iconHTML = renderIcon(project.icon, title);
+          const projectURL = folder
+            ? safeURL(`${folder.replace(/\/+$/, '')}/index.html`)
+            : '#';
+
+          return `
+            <article class="bg-white p-8 rounded-xl shadow-sm
+                            hover:shadow-lg transition border-t-4 border-blue-600
+                            flex flex-col h-full">
+              ${iconHTML}
+
+              <h3 class="text-2xl font-bold mb-3 text-gray-900">
+                ${escapeHTML(title)}
+              </h3>
+
+              <p class="text-gray-600 mb-6 flex-grow leading-relaxed">
+                ${escapeHTML(description)}
+              </p>
+
+              <a
+                href="${projectURL}"
+                class="text-blue-600 font-semibold hover:underline"
+              >
+                View Project &rarr;
+              </a>
+            </article>`;
+        }));
+
+        container.innerHTML = cards.join('');
+
+      } catch (error) {
+        container.innerHTML = `
+          <p class="text-red-600 md:col-span-2 lg:col-span-3">
+            Projects could not be loaded. Please try again later.
+          </p>`;
+
+        console.error('Projects loading failed:', error);
+      }
     }
 
-    feedContainer.innerHTML = ''
+    // -----------------------------------------
+    // NEWSROOM
+    // -----------------------------------------
+    async function fetchNews() {
+      const container = document.getElementById('news-feed');
+      if (!container) return;
 
-    data.forEach(post => {
-      const date = new Date(post.created_at).toLocaleDateString('en-US', {
-        year: 'numeric', month: 'long', day: 'numeric'
-      })
+      if (!supabaseClient) {
+        container.innerHTML = `
+          <p class="text-gray-600 md:col-span-2 lg:col-span-3">
+            News is temporarily unavailable.
+          </p>`;
+        return;
+      }
 
-      feedContainer.innerHTML += `
-        <div class="bg-white p-6 rounded shadow hover:shadow-lg transition flex flex-col h-full border border-gray-100">
-          <div class="text-xs font-bold text-blue-600 uppercase tracking-wide mb-2">News Update</div>
-          <h3 class="text-xl font-bold text-gray-900 mb-3">${post.title}</h3>
-          <p class="text-gray-600 mb-4 flex-grow line-clamp-3">${post.content}</p>
-          <div class="flex justify-between items-center text-sm text-gray-400 border-t pt-4 mt-auto">
-            <span>${date}</span>
-            <span>${post.author || 'Corex Team'}</span>
-          </div>
-        </div>
-      `
-    })
-  }
+      try {
+        const { data, error } = await supabaseClient
+          .from('news')
+          .select('title, content, created_at, author')
+          .order('created_at', { ascending: false })
+          .limit(6);
 
-  // ------------------------------
-  // VISITOR COUNTER
-  // ------------------------------
-  async function showCounterOnly() {
-    const el = document.getElementById("visitor-count")
-    if (!el) return
-    const { data, error } = await supabaseClient.from("site_counter").select("visits").eq("id", 1).single()
-    el.textContent = (error || !data) ? "—" : String(data.visits)
-  }
+        if (error) throw error;
 
-  async function incrementAndShowVisitorCount() {
-    const el = document.getElementById("visitor-count")
-    if (!el) return
+        if (!data || data.length === 0) {
+          container.innerHTML = `
+            <p class="text-gray-500 italic md:col-span-2 lg:col-span-3">
+              No news has been posted yet.
+            </p>`;
+          return;
+        }
 
-    const throttleKey = "corex_counter_throttle"
-    const last = Number(sessionStorage.getItem(throttleKey) || 0)
-    const now = Date.now()
+        container.innerHTML = data.map(post => {
+          const date = post.created_at
+            ? new Date(post.created_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })
+            : '';
 
-    if (now - last < 10_000) { await showCounterOnly(); return }
-    sessionStorage.setItem(throttleKey, String(now))
+          return `
+            <article class="bg-white p-6 rounded-xl shadow-sm
+                            hover:shadow-lg transition border border-gray-100
+                            flex flex-col h-full">
 
-    const { data, error } = await supabaseClient.from("site_counter").select("visits").eq("id", 1).single()
-    if (error || !data) { el.textContent = "—"; return }
+              <div class="text-xs font-bold text-blue-600 uppercase
+                          tracking-wide mb-3">
+                News Update
+              </div>
 
-    const next = Number(data.visits) + 1
-    const { error: upErr } = await supabaseClient.from("site_counter").update({ visits: next, updated_at: new Date().toISOString() }).eq("id", 1)
-    el.textContent = upErr ? String(data.visits) : String(next)
-  }
+              <h3 class="text-xl font-bold text-gray-900 mb-3">
+                ${escapeHTML(post.title)}
+              </h3>
 
-  fetchProjects()
-  fetchNews()
-  incrementAndShowVisitorCount()
+              <p class="text-gray-600 mb-5 flex-grow leading-relaxed">
+                ${escapeHTML(post.content)}
+              </p>
+
+              <div class="flex justify-between items-center gap-3
+                          text-sm text-gray-400 border-t pt-4 mt-auto">
+                <time>${escapeHTML(date)}</time>
+                <span>${escapeHTML(post.author || 'Corex Team')}</span>
+              </div>
+
+            </article>`;
+        }).join('');
+
+      } catch (error) {
+        container.innerHTML = `
+          <p class="text-gray-600 md:col-span-2 lg:col-span-3">
+            News is temporarily unavailable. Please try again later.
+          </p>`;
+
+        console.error('News loading failed:', error);
+      }
+    }
+
+    // -----------------------------------------
+    // VISITOR COUNTER
+    // -----------------------------------------
+    // This preserves the existing read-then-update design.
+    // For reliable concurrent counting, use a database-side
+    // atomic operation or a server-side function instead.
+    async function showCounterOnly() {
+      const element = document.getElementById('visitor-count');
+      if (!element || !supabaseClient) return;
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('site_counter')
+          .select('visits')
+          .eq('id', 1)
+          .single();
+
+        element.textContent =
+          error || !data ? '—' : String(data.visits);
+      } catch (_) {
+        element.textContent = '—';
+      }
+    }
+
+    async function incrementAndShowVisitorCount() {
+      const element = document.getElementById('visitor-count');
+
+      if (!element || !supabaseClient) return;
+
+      try {
+        const throttleKey = 'corex_counter_throttle';
+        const last = Number(sessionStorage.getItem(throttleKey) || 0);
+        const now = Date.now();
+
+        if (now - last < 10000) {
+          await showCounterOnly();
+          return;
+        }
+
+        const { data, error } = await supabaseClient
+          .from('site_counter')
+          .select('visits')
+          .eq('id', 1)
+          .single();
+
+        if (error || !data) {
+          element.textContent = '—';
+          return;
+        }
+
+        const nextCount = Number(data.visits) + 1;
+
+        const { error: updateError } = await supabaseClient
+          .from('site_counter')
+          .update({
+            visits: nextCount,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', 1);
+
+        if (updateError) {
+          element.textContent = String(data.visits);
+          return;
+        }
+
+        sessionStorage.setItem(throttleKey, String(now));
+        element.textContent = String(nextCount);
+
+      } catch (error) {
+        element.textContent = '—';
+        console.error('Visitor counter failed:', error);
+      }
+    }
+
+    // -----------------------------------------
+    // INITIALIZE
+    // -----------------------------------------
+    fetchProjects();
+    fetchNews();
+    incrementAndShowVisitorCount();
   </script>
 
 </body>
