@@ -5,6 +5,12 @@
       "name": "Brusher",
       "description": "A lightweight painting and image-editing tool built for fast, distraction-free creative work.",
       "icon": "./Brusher/Brusher.svg"
+    },
+    {
+      "folder": "Docu",
+      "name": "Docu",
+      "description": "A privacy-friendly document editor by Corex Team",
+      "icon": "./Docu/docu_full_logo.png"
     }
     
   ]
