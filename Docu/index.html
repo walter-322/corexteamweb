@@ -217,7 +217,7 @@
         <a href="#features"          class="py-3 hover:text-blue-600">Features</a>
         <a href="documentation.html" class="py-3 hover:text-blue-600">Docs</a>
         <a href="https://discord.gg/XSCWAy6eHj"       class="py-3 hover:text-blue-600">Join Us</a>
-        <a href="developers.html"    class="py-3 hover:text-blue-600">Developers</a>
+        <a href="../developers.html"    class="py-3 hover:text-blue-600">Developers</a>
         <a href="https://github.com/The-Corex-Team/" class="py-3 hover:text-blue-600">GitHub</a>
       </div>
     </div>
@@ -650,6 +650,9 @@
       });
       menu.addEventListener('click', function (e) {
         if (e.target.closest('a')) { menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false'); }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { menu.classList.add('hidden'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', 'Open menu'); }
       });
     })();
   </script>

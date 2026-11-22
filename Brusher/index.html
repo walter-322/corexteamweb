@@ -170,6 +170,26 @@
          class="hidden md:block bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition">
         GitHub
       </a>
+      <!-- Mobile menu button -->
+      <button id="menuBtn" type="button"
+              class="md:hidden shrink-0 text-gray-700 w-11 h-11 flex items-center justify-center rounded hover:bg-gray-100"
+              aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-gray-100 bg-white">
+      <div class="container mx-auto px-6 py-3 flex flex-col font-medium text-gray-700">
+        <a href="../index.html" class="py-3 hover:text-blue-600">Home</a>
+        <a href="../documentation.html" class="py-3 hover:text-blue-600">Docs</a>
+        <a href="../careers.html" class="py-3 hover:text-blue-600">Join Us</a>
+        <a href="../developers.html" class="py-3 hover:text-blue-600">Developers</a>
+        <a href="https://github.com/The-Corex-Team/" class="py-3 hover:text-blue-600">GitHub</a>
+      </div>
     </div>
   </nav>
 
@@ -508,6 +528,31 @@
       });
     }
   })();
+  </script>
+
+  <script>
+    // Mobile menu toggle
+    (function () {
+      var btn = document.getElementById('menuBtn');
+      var menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+
+      function setOpen(open) {
+        menu.classList.toggle('hidden', !open);
+        btn.setAttribute('aria-expanded', String(open));
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      }
+
+      btn.addEventListener('click', function () {
+        setOpen(menu.classList.contains('hidden'));
+      });
+      menu.addEventListener('click', function (e) {
+        if (e.target.closest('a')) setOpen(false);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    })();
   </script>
 
 </body>

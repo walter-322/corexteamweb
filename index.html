@@ -103,7 +103,7 @@
       <div class="hidden md:flex items-center gap-5">
         <div class="text-sm text-gray-500 whitespace-nowrap">
           Visitors:
-          <span id="visitor-count" class="text-gray-900 font-semibold">—</span>
+          <span id="visitor-count" data-visitor-count class="text-gray-900 font-semibold">—</span>
         </div>
 
         <a
@@ -114,11 +114,39 @@
         </a>
       </div>
 
-      <a href="#goals"
-         class="md:hidden text-blue-600 font-semibold whitespace-nowrap">
-        Our Goals
-      </a>
 
+      <!-- Mobile menu button -->
+      <button id="menuBtn" type="button"
+              class="lg:hidden shrink-0 text-gray-700 w-11 h-11 flex items-center justify-center rounded hover:bg-gray-100"
+              aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+             viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden lg:hidden border-t border-gray-100 bg-white">
+      <div class="container mx-auto px-6 py-3 flex flex-col font-medium text-gray-700">
+        <a href="index.html" class="py-3 hover:text-blue-600">Home</a>
+        <a href="documentation.html" class="py-3 hover:text-blue-600">Docs</a>
+        <a href="products.html" class="py-3 hover:text-blue-600">Projects</a>
+        <a href="#goals" class="py-3 hover:text-blue-600">Our Goals</a>
+        <a href="careers.html" class="py-3 hover:text-blue-600">Join Us</a>
+        <a href="developers.html" class="py-3 hover:text-blue-600">Developers</a>
+        <a href="news.html" class="py-3 hover:text-blue-600">News</a>
+        <div class="md:hidden flex items-center justify-between gap-4 pt-3 mt-2 border-t border-gray-100">
+          <span class="text-sm text-gray-500">
+            Visitors:
+            <span data-visitor-count class="text-gray-900 font-semibold">—</span>
+          </span>
+          <a href="https://github.com/The-Corex-Team/"
+             class="bg-blue-600 text-white px-5 py-2 rounded font-semibold hover:bg-blue-700 transition whitespace-nowrap">
+            Our Github
+          </a>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -886,22 +914,23 @@
     // -----------------------------------------
     // The API adds 1 in a single database step, so simultaneous
     // visitors are all counted correctly.
-    async function showCounterOnly() {
-      const element = document.getElementById('visitor-count');
-      if (!element) return;
+    // The number is shown in the top bar and in the phone menu.
+    function setVisitorCount(text) {
+      document.querySelectorAll('[data-visitor-count]').forEach(element => {
+        element.textContent = text;
+      });
+    }
 
+    async function showCounterOnly() {
       try {
         const data = await api('/api/visits');
-        element.textContent = String(data.visits);
+        setVisitorCount(String(data.visits));
       } catch (_) {
-        element.textContent = '—';
+        setVisitorCount('—');
       }
     }
 
     async function incrementAndShowVisitorCount() {
-      const element = document.getElementById('visitor-count');
-      if (!element) return;
-
       try {
         // Do not count reloads within 10 seconds twice.
         const throttleKey = 'corex_counter_throttle';
@@ -916,10 +945,10 @@
         const data = await api('/api/visits', { method: 'POST' });
 
         sessionStorage.setItem(throttleKey, String(now));
-        element.textContent = String(data.visits);
+        setVisitorCount(String(data.visits));
 
       } catch (error) {
-        element.textContent = '—';
+        setVisitorCount('—');
         console.error('Visitor counter failed:', error);
       }
     }
@@ -930,6 +959,31 @@
     fetchProjects();
     fetchNews();
     incrementAndShowVisitorCount();
+  </script>
+
+  <script>
+    // Mobile menu toggle
+    (function () {
+      var btn = document.getElementById('menuBtn');
+      var menu = document.getElementById('mobileMenu');
+      if (!btn || !menu) return;
+
+      function setOpen(open) {
+        menu.classList.toggle('hidden', !open);
+        btn.setAttribute('aria-expanded', String(open));
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      }
+
+      btn.addEventListener('click', function () {
+        setOpen(menu.classList.contains('hidden'));
+      });
+      menu.addEventListener('click', function (e) {
+        if (e.target.closest('a')) setOpen(false);
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') setOpen(false);
+      });
+    })();
   </script>
 
 </body>
