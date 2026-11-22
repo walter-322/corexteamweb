@@ -11,9 +11,6 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Supabase Client -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -615,17 +612,20 @@
   <!-- JAVASCRIPT -->
   <script>
     // -----------------------------------------
-    // SUPABASE CONFIGURATION
+    // API (Cloudflare Worker "corex-api")
     // -----------------------------------------
-    const supabaseUrl = 'https://nmjihkyqwfrwvlntcuek.supabase.co';
-    const supabaseKey = 'sb_publishable_bJ5fasAa3uZGEWYR3TpgJQ_up1J5aRv';
+    // Address of the API. If you ever move it, change it here only.
+    const API_BASE = 'https://api.corexteam.org';
 
-    // A publishable key is intended for browser use.
-    // Protect database access with correct Supabase RLS policies.
-    const supabaseClient =
-      typeof supabase !== 'undefined'
-        ? supabase.createClient(supabaseUrl, supabaseKey)
-        : null;
+    async function api(path, options) {
+      const response = await fetch(API_BASE + path, options);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      return response.json();
+    }
 
     // -----------------------------------------
     // HTML ESCAPING
@@ -824,22 +824,8 @@
       const container = document.getElementById('news-feed');
       if (!container) return;
 
-      if (!supabaseClient) {
-        container.innerHTML = `
-          <p class="text-gray-600 md:col-span-2 lg:col-span-3">
-            News is temporarily unavailable.
-          </p>`;
-        return;
-      }
-
       try {
-        const { data, error } = await supabaseClient
-          .from('news')
-          .select('title, content, created_at, author')
-          .order('created_at', { ascending: false })
-          .limit(6);
-
-        if (error) throw error;
+        const { news: data } = await api('/api/news?limit=6');
 
         if (!data || data.length === 0) {
           container.innerHTML = `
@@ -898,22 +884,15 @@
     // -----------------------------------------
     // VISITOR COUNTER
     // -----------------------------------------
-    // This preserves the existing read-then-update design.
-    // For reliable concurrent counting, use a database-side
-    // atomic operation or a server-side function instead.
+    // The API adds 1 in a single database step, so simultaneous
+    // visitors are all counted correctly.
     async function showCounterOnly() {
       const element = document.getElementById('visitor-count');
-      if (!element || !supabaseClient) return;
+      if (!element) return;
 
       try {
-        const { data, error } = await supabaseClient
-          .from('site_counter')
-          .select('visits')
-          .eq('id', 1)
-          .single();
-
-        element.textContent =
-          error || !data ? '—' : String(data.visits);
+        const data = await api('/api/visits');
+        element.textContent = String(data.visits);
       } catch (_) {
         element.textContent = '—';
       }
@@ -921,10 +900,10 @@
 
     async function incrementAndShowVisitorCount() {
       const element = document.getElementById('visitor-count');
-
-      if (!element || !supabaseClient) return;
+      if (!element) return;
 
       try {
+        // Do not count reloads within 10 seconds twice.
         const throttleKey = 'corex_counter_throttle';
         const last = Number(sessionStorage.getItem(throttleKey) || 0);
         const now = Date.now();
@@ -934,34 +913,10 @@
           return;
         }
 
-        const { data, error } = await supabaseClient
-          .from('site_counter')
-          .select('visits')
-          .eq('id', 1)
-          .single();
-
-        if (error || !data) {
-          element.textContent = '—';
-          return;
-        }
-
-        const nextCount = Number(data.visits) + 1;
-
-        const { error: updateError } = await supabaseClient
-          .from('site_counter')
-          .update({
-            visits: nextCount,
-            updated_at: new Date().toISOString()
-          })
-          .eq('id', 1);
-
-        if (updateError) {
-          element.textContent = String(data.visits);
-          return;
-        }
+        const data = await api('/api/visits', { method: 'POST' });
 
         sessionStorage.setItem(throttleKey, String(now));
-        element.textContent = String(nextCount);
+        element.textContent = String(data.visits);
 
       } catch (error) {
         element.textContent = '—';
