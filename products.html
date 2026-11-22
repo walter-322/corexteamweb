@@ -8,9 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-  <!-- Supabase JS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
 
@@ -125,7 +122,7 @@
       <div id="projects-empty" class="hidden mt-8 text-center text-gray-400 py-16">
         <i class="fa-solid fa-box-open text-5xl mb-4"></i>
         <p class="text-lg font-medium">No projects yet.</p>
-        <p class="text-sm mt-1">Add a row to the <code class="bg-gray-100 px-1 rounded">projects</code> table in Supabase.</p>
+        <p class="text-sm mt-1">New projects will appear here soon.</p>
       </div>
 
       <!-- Callout -->
@@ -184,13 +181,11 @@
     </div>
   </footer>
 
-  <!-- ───────────────────────── SUPABASE LOGIC ───────────────────────── -->
+  <!-- ───────────────────────── PROJECTS ───────────────────────── -->
   <script>
-    // ┌─────────────────────────────────────────────────────────────┐
-    // │  🔧 CONFIGURE YOUR SUPABASE CREDENTIALS HERE               │
-    // └─────────────────────────────────────────────────────────────┘
-    const SUPABASE_URL  = 'https://nmjihkyqwfrwvlntcuek.supabase.co';  // ← replace
-    const SUPABASE_KEY  = 'sb_publishable_bJ5fasAa3uZGEWYR3TpgJQ_up1J5aRv';                 // ← replace
+    // Address of the API (Cloudflare Worker "corex-api").
+    // If you ever move it, change it here only.
+    const API_BASE = 'https://api.corexteam.org';
 
     // Map colour names to Tailwind classes
     const COLOR_MAP = {
@@ -208,61 +203,75 @@
       return COLOR_MAP[name] ?? COLOR_MAP['blue'];
     }
 
+    // Escape text before it is put into HTML.
+    function escapeHTML(value) {
+      return String(value ?? '').replace(/[&<>"']/g, character => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[character]);
+    }
+
+    // Allow only http(s) links and links on this website.
+    function safeURL(value) {
+      const url = String(value ?? '').trim();
+      if (!url) return '#';
+
+      try {
+        const parsed = new URL(url, window.location.href);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+          return escapeHTML(url);
+        }
+      } catch (_) {
+        // Invalid URL.
+      }
+
+      return '#';
+    }
+
+    function renderIcon(rawIcon, title, c) {
+      const icon = String(rawIcon ?? '').trim();
+
+      const isImage =
+        /^(https?:\/\/|\/|\.\/|\.\.\/)/i.test(icon) ||
+        /\.(png|jpe?g|gif|svg|webp|bmp|avif|ico)(\?.*)?$/i.test(icon);
+
+      if (icon && isImage) {
+        return `<img src="${safeURL(icon)}" alt="${escapeHTML(title)} icon" loading="lazy" class="w-10 h-10 object-contain mb-4" />`;
+      }
+
+      // Otherwise treat it as Font Awesome classes, e.g. "fa-solid fa-code".
+      const validIcon = icon && icon.split(/\s+/).every(token => /^[a-zA-Z0-9_-]+$/.test(token));
+      const classes = validIcon ? icon : 'fa-solid fa-cube';
+
+      return `<div class="${c.text} text-4xl mb-4" aria-hidden="true"><i class="${escapeHTML(classes)}"></i></div>`;
+    }
+
     function buildCard(project, index) {
       const c = getColor(project.color);
 
       const repoBtn = project.repo_url
-        ? `<a href="${project.repo_url}" class="${c.btn} text-white px-4 py-2 rounded font-semibold transition">Repository</a>`
+        ? `<a href="${safeURL(project.repo_url)}" class="${c.btn} text-white px-4 py-2 rounded font-semibold transition">Repository</a>`
         : '';
 
       const releasesBtn = project.releases_url
-        ? `<a href="${project.releases_url}" class="border border-gray-200 px-4 py-2 rounded font-semibold hover:bg-gray-50 transition">Releases</a>`
+        ? `<a href="${safeURL(project.releases_url)}" class="border border-gray-200 px-4 py-2 rounded font-semibold hover:bg-gray-50 transition">Releases</a>`
         : '';
 
-      const textLink = project.link_label && project.link_url
-        ? `<a href="${project.link_url}" class="${c.link} font-semibold hover:underline">${project.link_label}</a>`
+      const actions = (repoBtn || releasesBtn)
+        ? `<div class="flex gap-3 flex-wrap">${repoBtn}${releasesBtn}</div>`
         : '';
-
-      let actions = '';
-      if (repoBtn || releasesBtn) {
-        actions = `<div class="flex gap-3 flex-wrap">${repoBtn}${releasesBtn}</div>`;
-      } else if (textLink) {
-        actions = textLink;
-      }
-
-      const rawIcon = (project.icon ?? '').trim();
-      const isUrl = rawIcon.startsWith('http') || rawIcon.startsWith('/');
-      console.log(`[${project.name}] icon value:`, JSON.stringify(rawIcon), '| isUrl:', isUrl);
-      const iconHtml = isUrl
-        ? `<img src="${rawIcon}" alt="${project.name} icon" class="w-10 h-10 object-contain mb-4" onerror="this.style.outline='2px solid red';this.title='Failed to load: ${rawIcon}'" />`
-        : `<div class="${c.text} text-4xl mb-4"><i class="${rawIcon || 'fa-solid fa-cube'}"></i></div>`;
 
       return `
         <div class="project-card bg-white p-7 rounded shadow hover:shadow-lg transition ${c.border} border-t-4 flex flex-col"
              style="animation-delay: ${index * 80}ms">
-          ${iconHtml}
-          <h3 class="text-2xl font-bold mb-2">${project.name}</h3>
-          <p class="text-gray-600 mb-5 flex-grow">${project.description ?? ''}</p>
+          ${renderIcon(project.icon, project.name, c)}
+          <h3 class="text-2xl font-bold mb-2">${escapeHTML(project.name)}</h3>
+          <p class="text-gray-600 mb-5 flex-grow">${escapeHTML(project.description ?? '')}</p>
           ${actions}
         </div>`;
-    }
-
-    // ── Debug helper: shown only when data is empty so you know WHY ──
-    function showDebug(info) {
-      const box = document.createElement('div');
-      box.className = 'mt-6 bg-yellow-50 border border-yellow-300 rounded p-5 text-sm text-yellow-900 font-mono';
-      box.innerHTML = `
-        <p class="font-bold text-yellow-800 mb-2">🔍 Debug info (remove before going live)</p>
-        <ul class="space-y-1 list-disc list-inside">
-          ${info.map(i => `<li>${i}</li>`).join('')}
-        </ul>
-        <p class="mt-3 font-bold">Most likely fix: RLS is blocking anon reads.</p>
-        <p class="mt-1">In Supabase → Authentication → Policies, run:</p>
-        <pre class="bg-yellow-100 rounded p-2 mt-2 whitespace-pre-wrap">create policy "public read"
-on projects for select
-to anon
-using (true);</pre>`;
-      document.getElementById('projects-grid').after(box);
     }
 
     async function loadProjects() {
@@ -270,47 +279,27 @@ using (true);</pre>`;
       const error = document.getElementById('projects-error');
       const empty = document.getElementById('projects-empty');
 
-      // Guard: placeholder credentials still in place
-      if (SUPABASE_URL.includes('YOUR_PROJECT_ID') || SUPABASE_KEY.includes('YOUR_ANON')) {
-        grid.innerHTML = '';
-        error.classList.remove('hidden');
-        document.getElementById('projects-error-msg').textContent =
-          'SUPABASE_URL and SUPABASE_KEY are still placeholders — replace them in the <script> block.';
-        return;
-      }
-
       try {
-        const { createClient } = supabase;
-        const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+        const response = await fetch(API_BASE + '/api/projects');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        const { data: projects, error: dbError, status, statusText } = await db
-          .from('projects')
-          .select('*')
-          .order('created_at', { ascending: true });
+        const { projects } = await response.json();
 
         grid.innerHTML = ''; // clear skeletons
 
-        if (dbError) throw dbError;
-
         if (!projects || projects.length === 0) {
           empty.classList.remove('hidden');
-          // Show debug panel so the user knows what happened
-          showDebug([
-            `HTTP status: ${status} ${statusText ?? ''}`,
-            'Supabase returned 0 rows — your row exists but something is blocking it.',
-            'Table name used: <strong>projects</strong> — make sure it matches exactly.',
-            'RLS (Row Level Security) is ON by default and silently hides rows from anonymous users.',
-          ]);
           return;
         }
 
         grid.innerHTML = projects.map((p, i) => buildCard(p, i)).join('');
 
       } catch (err) {
-        console.error('Supabase error:', err);
+        console.error('Projects loading failed:', err);
         grid.innerHTML = '';
         error.classList.remove('hidden');
-        document.getElementById('projects-error-msg').textContent = err.message ?? String(err);
+        document.getElementById('projects-error-msg').textContent =
+          'Projects could not be loaded. Please try again later.';
       }
     }
 

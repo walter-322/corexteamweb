@@ -7,8 +7,6 @@
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Supabase Client -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
@@ -211,21 +209,16 @@
   <!-- JAVASCRIPT -->
   <script>
     // ------------------------------------------
-    // SUPABASE KEYS (same as your index.html)
+    // API (Cloudflare Worker "corex-api")
     // ------------------------------------------
-   const supabaseUrl = 'https://nmjihkyqwfrwvlntcuek.supabase.co'
-   const supabaseKey = 'sb_publishable_bJ5fasAa3uZGEWYR3TpgJQ_up1J5aRv'
+    // Address of the API. If you ever move it, change it here only.
+    const API_BASE = 'https://api.corexteam.org'
 
-    if (typeof supabase === 'undefined') {
-      const errorBox = document.getElementById('error')
-      const errorMsg = document.getElementById('error-msg')
-      document.getElementById('status').classList.add('hidden')
-      errorBox.classList.remove('hidden')
-      errorMsg.textContent = 'Supabase library not loaded. Check your connection or script tag.'
-      throw new Error('Supabase not loaded')
+    async function api(path) {
+      const response = await fetch(API_BASE + path)
+      if (!response.ok) throw new Error('HTTP ' + response.status)
+      return response.json()
     }
-
-    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey)
 
     // UI
     const grid = document.getElementById('news-grid')
@@ -392,19 +385,18 @@
       clearError()
       setLoading(true)
 
-      const { data, error } = await supabaseClient
-        .from('news')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(500)
-
-      setLoading(false)
-
-      if (error) {
-        console.error('Supabase Error:', error)
-        setError(error.message || 'Unknown error.')
+      let data
+      try {
+        const result = await api('/api/news?limit=500')
+        data = result.news
+      } catch (err) {
+        setLoading(false)
+        console.error('News loading failed:', err)
+        setError('News could not be loaded. Please try again later.')
         return
       }
+
+      setLoading(false)
 
       allPosts = Array.isArray(data) ? data : []
       render(true)
